@@ -18,6 +18,8 @@ public class StepCounter extends Service implements SensorInterface, SensorEvent
     SensorManager mSensorManager;
     Sensor stepCounter;
 
+    private ChangeListener listener;
+
     public StepCounter() {
 
     }
@@ -59,6 +61,9 @@ public class StepCounter extends Service implements SensorInterface, SensorEvent
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         System.out.println("Sensor changed.");
+        if (listener != null) {
+            listener.onChangeHappened();
+        }
     }
 
     @Override
@@ -94,5 +99,9 @@ public class StepCounter extends Service implements SensorInterface, SensorEvent
     @Override
     public void setTimestamp(Timestamp timestamp) {
 
+    }
+
+    public void setChangeListener(ChangeListener listener) {
+        this.listener = listener;
     }
 }

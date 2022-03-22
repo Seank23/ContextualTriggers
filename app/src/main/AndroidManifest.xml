@@ -19,6 +19,9 @@
             </intent-filter>
         </activity>
         <service
+            android:name="com.example.contextualtriggers.api.ContextAPI"
+            android:exported="false"/>
+        <service
             android:name="com.example.contextualtriggers.api.StepCounter"
             android:exported="false"/>
     </application>
