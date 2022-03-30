@@ -15,4 +15,6 @@ public interface SensorInterface {
     void setSensorValue(double sensorValue);
 
     void setTimestamp(Timestamp timestamp);
+
+    void setChangeListener(ChangeListener listener);
 }

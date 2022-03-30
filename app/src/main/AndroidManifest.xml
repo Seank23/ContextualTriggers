@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ContextualTriggers">
         <activity
+            android:name=".SetupActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -18,12 +21,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service
-            android:name="com.example.contextualtriggers.api.ContextAPI"
-            android:exported="false"/>
+            android:name=".api.ContextAPI"
+            android:exported="false" />
         <service
-            android:name="com.example.contextualtriggers.api.StepCounter"
-            android:exported="false"/>
+            android:name=".api.StepCounter"
+            android:exported="false" />
     </application>
 
 </manifest>

@@ -3,10 +3,12 @@ package com.example.contextualtriggers.api;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Binder;
 import android.os.IBinder;
 
 import androidx.annotation.Nullable;
@@ -15,34 +17,29 @@ import java.sql.Timestamp;
 
 public class StepCounter extends Service implements SensorInterface, SensorEventListener {
 
+    public static StepCounter instance;
     SensorManager mSensorManager;
     Sensor stepCounter;
 
     private ChangeListener listener;
 
-    public StepCounter() {
-
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        instance = this;
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         stepCounter = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
-       System.out.println("Hello");
+        System.out.println("Hello");
 
         mSensorManager.registerListener(this, stepCounter, SensorManager.SENSOR_DELAY_NORMAL);
 
         return super.onStartCommand(intent, flags, startId);
-    }
-
-    @Override
-    public void onStart(Intent intent, int startId) {
-        super.onStart(intent, startId);
-
-
-        
-
     }
 
     @Override
@@ -101,7 +98,9 @@ public class StepCounter extends Service implements SensorInterface, SensorEvent
 
     }
 
+    @Override
     public void setChangeListener(ChangeListener listener) {
         this.listener = listener;
     }
 }
+
