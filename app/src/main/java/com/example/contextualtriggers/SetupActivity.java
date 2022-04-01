@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import com.example.contextualtriggers.api.ContextAPI;
 import com.example.contextualtriggers.api.StepCounter;
+import com.example.contextualtriggers.triggers.StepTrigger;
+import com.example.contextualtriggers.triggers.TriggerManager;
 
 public class SetupActivity extends AppCompatActivity {
 
@@ -14,9 +16,12 @@ public class SetupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup);
 
-        // Get ContextAPI
-        ContextAPI api = ContextAPI.instance;
         // Add sensors to API
+        ContextAPI api = ContextAPI.instance;
         api.addSensor(StepCounter.instance);
+
+        // Add triggers to TriggerManager
+        TriggerManager triggerManager = TriggerManager.instance;
+        triggerManager.addTrigger(new StepTrigger());
     }
 }

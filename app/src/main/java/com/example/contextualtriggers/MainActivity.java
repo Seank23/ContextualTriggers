@@ -10,7 +10,10 @@ import android.os.Bundle;
 import android.os.IBinder;
 
 import com.example.contextualtriggers.api.ContextAPI;
+import com.example.contextualtriggers.api.ServiceManager;
 import com.example.contextualtriggers.api.StepCounter;
+import com.example.contextualtriggers.triggers.TriggerInterface;
+import com.example.contextualtriggers.triggers.TriggerManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,8 +22,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        startService(new Intent(this, ServiceManager.class));
+
         // Start ContextAPI
         startService(new Intent(this, ContextAPI.class));
+
+
+        startService(new Intent(this, TriggerManager.class));
 
         // Start sensors
         startService(new Intent(this, StepCounter.class));

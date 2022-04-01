@@ -6,15 +6,15 @@ public interface SensorInterface {
 
     int getSensorType();
 
-    double getSensorValue();
+    int getSensorValue();
 
-    Timestamp getTimestamp();
+    long getTimestamp();
 
     void setSensorType(int sensorType);
 
-    void setSensorValue(double sensorValue);
+    void setSensorValue(int sensorValue);
 
-    void setTimestamp(Timestamp timestamp);
+    void setTimestamp(long timestamp);
 
     void setChangeListener(ChangeListener listener);
 }

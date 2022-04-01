@@ -74,13 +74,13 @@ public class StepCounter extends Service implements SensorInterface, SensorEvent
     }
 
     @Override
-    public double getSensorValue() {
+    public int getSensorValue() {
         return 0;
     }
 
     @Override
-    public Timestamp getTimestamp() {
-        return null;
+    public long getTimestamp() {
+        return 0;
     }
 
     @Override
@@ -89,12 +89,12 @@ public class StepCounter extends Service implements SensorInterface, SensorEvent
     }
 
     @Override
-    public void setSensorValue(double sensorValue) {
+    public void setSensorValue(int sensorValue) {
 
     }
 
     @Override
-    public void setTimestamp(Timestamp timestamp) {
+    public void setTimestamp(long timestamp) {
 
     }
 

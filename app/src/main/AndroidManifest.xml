@@ -28,6 +28,12 @@
         <service
             android:name=".api.StepCounter"
             android:exported="false" />
+        <service
+            android:name=".api.ServiceManager"
+            android:exported="false" />
+        <service
+            android:name=".triggers.TriggerManager"
+            android:exported="false" />
     </application>
 
 </manifest>
