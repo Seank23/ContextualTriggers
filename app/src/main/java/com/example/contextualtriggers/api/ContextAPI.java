@@ -48,7 +48,7 @@ public class ContextAPI extends Service implements ChangeListener {
         int type = sensors.get(0).getSensorType();
         int value = sensors.get(0).getSensorValue();
         long timestamp = sensors.get(0).getTimestamp();
-        System.out.println("Type: " + type + " Value: " + value + " Time: " + timestamp);
+        //System.out.println("Type: " + type + " Value: " + value + " Time: " + timestamp);
         if(serviceManager != null)
             serviceManager.setData(new SensorData(type, value, timestamp));
     }

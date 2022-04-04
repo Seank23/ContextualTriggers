@@ -20,13 +20,13 @@ public class ServiceManager extends Service {
     public ServiceManager() {
 
         currentData = new HashMap<>();
-        triggerManager = TriggerManager.instance;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
+        triggerManager = TriggerManager.instance;
     }
 
     @Nullable
@@ -43,6 +43,6 @@ public class ServiceManager extends Service {
             int prevVal = currentData.get(data.type).value;
             currentData.replace(data.type, new SensorData(data.type, prevVal + data.value, data.timestamp));
         }
-        triggerManager.checkTriggers(currentData);
+        TriggerManager.instance.checkTriggers(currentData);
     }
 }

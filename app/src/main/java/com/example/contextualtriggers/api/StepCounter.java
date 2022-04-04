@@ -14,12 +14,15 @@ import android.os.IBinder;
 import androidx.annotation.Nullable;
 
 import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.Date;
 
 public class StepCounter extends Service implements SensorInterface, SensorEventListener {
 
     public static StepCounter instance;
     SensorManager mSensorManager;
     Sensor stepCounter;
+    long timestamp = 0;
 
     private ChangeListener listener;
 
@@ -57,7 +60,8 @@ public class StepCounter extends Service implements SensorInterface, SensorEvent
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
-        System.out.println("Sensor changed.");
+        //System.out.println("Sensor changed.");
+        timestamp = Instant.now().getEpochSecond();
         if (listener != null) {
             listener.onChangeHappened();
         }
@@ -75,12 +79,12 @@ public class StepCounter extends Service implements SensorInterface, SensorEvent
 
     @Override
     public int getSensorValue() {
-        return 0;
+        return 1;
     }
 
     @Override
     public long getTimestamp() {
-        return 0;
+        return timestamp;
     }
 
     @Override
