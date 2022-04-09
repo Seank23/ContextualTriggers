@@ -10,14 +10,19 @@ import java.util.List;
 
 public class stepsRepository {
     private stepsDAO sDao;
+    private notificationDAO nDao;
+
     private stepsEntity latestStepCount;
+    private notificationEntity latestNotification;
 
     public stepsRepository(Application app) {
         Database db = Database.getInstance(app);
         sDao = db.sDAO();
+        nDao = db.nDAO();
 
         //Need to get LiveData working for this, should be in background but will only work in main thread
         latestStepCount = sDao.getLastStepCount();
+        latestNotification = nDao.getLatestNotification();
 
 
 
@@ -27,11 +32,17 @@ public class stepsRepository {
         new InsertStepsASyncTask(sDao).execute(steps);
     }
 
+    public void insert(notificationEntity notification) {new InsertNotificationASyncTask(nDao).execute(notification);}
+
     public stepsEntity getLatestStepCount() {
         //System.out.println("LATEST STEPS COUNT: "+latestStepCount.getStepCount());
         //System.out.println("LATEST STEPS COUNT: "+latestStepCount.getTimestamp());
         //System.out.println("LIST SIZE: "+latestStepCount.size());
         return latestStepCount;
+    }
+
+    public notificationEntity getLatestNotification() {
+        return latestNotification;
     }
 
 
@@ -49,6 +60,19 @@ public class stepsRepository {
 
             System.out.println("Value added: "+stepsEntities[0].getStepCount());
             System.out.println("TIMESTAMP: "+stepsEntities[0].getTimestamp());
+            return null;
+        }
+    }
+
+    private static class InsertNotificationASyncTask extends AsyncTask<notificationEntity, Void, Void> {
+
+        private notificationDAO nDao;
+        private InsertNotificationASyncTask(notificationDAO nDao) {this.nDao = nDao;}
+
+        @Override
+        protected Void doInBackground(notificationEntity... notificationEntities) {
+            nDao.insert(notificationEntities[0]);
+            System.out.println("Notification added to DB");
             return null;
         }
     }

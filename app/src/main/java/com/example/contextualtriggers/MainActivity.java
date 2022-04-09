@@ -12,6 +12,7 @@ import android.os.IBinder;
 import com.example.contextualtriggers.api.ContextAPI;
 import com.example.contextualtriggers.api.ServiceManager;
 import com.example.contextualtriggers.api.StepCounter;
+import com.example.contextualtriggers.notification.NotificationManager;
 import com.example.contextualtriggers.triggers.TriggerInterface;
 import com.example.contextualtriggers.triggers.TriggerManager;
 
@@ -29,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         startService(new Intent(this, TriggerManager.class));
+
+
+        startService(new Intent(this, NotificationManager.class));
 
         // Start sensors
         startService(new Intent(this, StepCounter.class));

@@ -6,6 +6,7 @@ import android.os.IBinder;
 import androidx.annotation.Nullable;
 
 import com.example.contextualtriggers.data.SensorData;
+import com.example.contextualtriggers.notification.NotificationManager;
 import com.example.contextualtriggers.triggers.TriggerManager;
 
 import java.util.HashMap;
@@ -43,6 +44,10 @@ public class ServiceManager extends Service {
             int prevVal = currentData.get(data.type).value;
             currentData.replace(data.type, new SensorData(data.type, prevVal + data.value, data.timestamp));
         }
-        TriggerManager.instance.checkTriggers(currentData);
+        if (TriggerManager.instance.checkTriggers(currentData).containsValue(true)) {
+            System.out.println("Triggered.");
+            NotificationManager nm = new NotificationManager();
+            nm.sendNotification(TriggerManager.instance.checkTriggers(currentData));
+        }
     }
 }
