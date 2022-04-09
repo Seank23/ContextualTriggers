@@ -7,8 +7,12 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 
 import com.example.contextualtriggers.data.SensorData;
+import com.example.contextualtriggers.database.stepsEntity;
+import com.example.contextualtriggers.database.stepsRepository;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -18,7 +22,12 @@ public class ContextAPI extends Service implements ChangeListener {
     public static ContextAPI instance;
     private ServiceManager serviceManager;
 
+    private stepsRepository sr;
+
     private ArrayList<SensorInterface> sensors;
+
+    int latestStepValue = 0;
+    String latestTimestamp = "";
 
     @Override
     public void onCreate() {
@@ -26,6 +35,7 @@ public class ContextAPI extends Service implements ChangeListener {
         instance = this;
         serviceManager = ServiceManager.instance;
         sensors = new ArrayList<>();
+        sr = new stepsRepository(getApplication());
     }
 
     @Nullable
@@ -51,5 +61,11 @@ public class ContextAPI extends Service implements ChangeListener {
         //System.out.println("Type: " + type + " Value: " + value + " Time: " + timestamp);
         if(serviceManager != null)
             serviceManager.setData(new SensorData(type, value, timestamp));
+        sr.insert(new stepsEntity(value,String.valueOf(new Timestamp(System.currentTimeMillis()))));
+
+        //Gets most recent entry - compared timestamps and it outputs the values just inserted above.
+        stepsRepository rep = new stepsRepository(getApplication());
+        stepsEntity e = rep.getLatestStepCount();
+        System.out.println("OTHER: "+e.getTimestamp());
     }
 }
