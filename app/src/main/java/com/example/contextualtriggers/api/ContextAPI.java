@@ -66,13 +66,20 @@ public class ContextAPI extends Service implements ChangeListener {
         int value = sensors.get(0).getSensorValue();
         long timestamp = sensors.get(0).getTimestamp();
         //System.out.println("Type: " + type + " Value: " + value + " Time: " + timestamp);
-        if(serviceManager != null)
-            serviceManager.setData(new SensorData(type, value, timestamp));
-        sr.insert(new stepsEntity(value,String.valueOf(new Timestamp(System.currentTimeMillis()))));
 
         //Gets most recent entry - compared timestamps and it outputs the values just inserted above.
         stepsRepository rep = new stepsRepository(getApplication());
         stepsEntity e = rep.getLatestStepCount();
-        System.out.println("OTHER: "+e.getTimestamp());
+        //System.out.println("OTHER: "+e.getTimestamp());
+        int oldVal = e.getStepCount();
+        int diff = value - oldVal;
+
+
+        if (diff > -4) {
+            sr.insert(new stepsEntity(value,String.valueOf(new Timestamp(System.currentTimeMillis()))));
+        }
+
+
+
     }
 }

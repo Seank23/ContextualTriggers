@@ -28,6 +28,8 @@ public class ServiceManager extends Service {
         super.onCreate();
         instance = this;
         triggerManager = TriggerManager.instance;
+
+
     }
 
     @Nullable
@@ -50,4 +52,5 @@ public class ServiceManager extends Service {
             nm.sendNotification(TriggerManager.instance.checkTriggers(currentData));
         }
     }
+
 }
