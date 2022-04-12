@@ -18,7 +18,7 @@ public class StepTrigger implements TriggerInterface {
     @Override
     public boolean checkTrigger(HashMap<Integer, SensorData> data) {
         SensorData stepsData = data.get(0);
-        if(stepsData.value > 10) {
+        if(stepsData.value < 100) {
             System.out.println("Trigger activated: " + stepsData.value + " steps");
             return true;
         }

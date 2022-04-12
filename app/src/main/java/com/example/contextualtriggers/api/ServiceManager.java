@@ -15,7 +15,6 @@ import java.util.Map;
 public class ServiceManager extends Service {
 
     public static ServiceManager instance;
-    private TriggerManager triggerManager;
     private HashMap<Integer, SensorData> currentData;
 
     public ServiceManager() {
@@ -27,9 +26,6 @@ public class ServiceManager extends Service {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        triggerManager = TriggerManager.instance;
-
-
     }
 
     @Nullable
@@ -53,4 +49,14 @@ public class ServiceManager extends Service {
         }
     }
 
+    public void handleCheckTriggers() {
+
+        // Get data from ContextAPI
+
+        HashMap<Integer, Boolean> triggerOutputs = TriggerManager.instance.checkTriggers(currentData);
+        if(triggerOutputs.containsValue(true)) {
+            System.out.println("Triggered.");
+            NotificationManager.instance.sendNotification(triggerOutputs);
+        }
+    }
 }

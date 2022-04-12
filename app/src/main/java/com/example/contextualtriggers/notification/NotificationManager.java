@@ -28,7 +28,15 @@ import java.util.concurrent.TimeUnit;
 public class NotificationManager extends Service {
     Context c;
 
+    public static NotificationManager instance;
+
     private static final int STEPS_TRIGGER_ID = 1;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        instance = this;
+    }
 
     public void sendNotification(HashMap<Integer, Boolean> triggers) {
         Set<Integer> IDs = triggers.keySet();
