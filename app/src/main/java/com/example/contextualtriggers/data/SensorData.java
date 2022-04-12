@@ -1,14 +1,16 @@
 package com.example.contextualtriggers.data;
 
+import java.util.ArrayList;
+
 public class SensorData {
 
     public int type;
-    public int value;
-    public long timestamp;
+    public ArrayList<Object> values;
+    public ArrayList<Long> timestamps;
 
-    public SensorData(int type, int value, long timestamp) {
+    public SensorData(int type, ArrayList<Object> value, ArrayList<Long> timestamp) {
         this.type = type;
-        this.value = value;
-        this.timestamp = timestamp;
+        this.values = value;
+        this.timestamps = timestamp;
     }
 }
