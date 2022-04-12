@@ -13,6 +13,9 @@ public class StepTrigger implements TriggerInterface {
     }
 
     @Override
+    public String getSensorsRequired() { return "0"; }
+
+    @Override
     public boolean checkTrigger(HashMap<Integer, SensorData> data) {
         SensorData stepsData = data.get(0);
         if(stepsData.value > 10) {

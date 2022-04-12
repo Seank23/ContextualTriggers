@@ -6,11 +6,13 @@ import android.os.IBinder;
 
 import androidx.annotation.Nullable;
 
+import com.example.contextualtriggers.api.ContextAPI;
 import com.example.contextualtriggers.api.SensorInterface;
 import com.example.contextualtriggers.data.SensorData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class TriggerManager extends Service {
 
@@ -43,9 +45,22 @@ public class TriggerManager extends Service {
         HashMap<Integer, Boolean> triggerOutput = new HashMap<>();
 
         for(TriggerInterface trigger : triggers) {
-            boolean output = trigger.checkTrigger(dataHashMap);
+
+            HashMap<Integer, SensorData> triggerData = getTriggerData(trigger.getSensorsRequired(), dataHashMap);
+            boolean output = trigger.checkTrigger(triggerData);
             triggerOutput.put(trigger.getId(), output);
         }
         return triggerOutput;
+    }
+
+    private HashMap<Integer, SensorData> getTriggerData(String sensorTypes, HashMap<Integer, SensorData> inputData) {
+
+        HashMap<Integer, SensorData> outputData = new HashMap<>();
+        Integer[] activeSensors = ContextAPI.instance.getSensorTypes();
+        for (int type : activeSensors) {
+            if (sensorTypes.contains(Integer.toString(type)))
+                outputData.put(type, inputData.get(type));
+        }
+        return outputData;
     }
 }
