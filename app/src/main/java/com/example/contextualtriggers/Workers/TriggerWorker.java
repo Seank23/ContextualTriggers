@@ -18,6 +18,6 @@ public class TriggerWorker extends Worker {
     public Result doWork() {
         System.out.println("THIS IS A TEST WORKER");
         ServiceManager.instance.handleCheckTriggers();
-        return null;
+        return Result.success();
     }
 }

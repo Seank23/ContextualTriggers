@@ -26,6 +26,8 @@ public class ServiceManager extends Service {
     public void onCreate() {
         super.onCreate();
         instance = this;
+
+
     }
 
     @Nullable

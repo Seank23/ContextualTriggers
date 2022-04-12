@@ -56,7 +56,7 @@ public class TriggerManager extends Service {
     private HashMap<Integer, SensorData> getTriggerData(String sensorTypes, HashMap<Integer, SensorData> inputData) {
 
         HashMap<Integer, SensorData> outputData = new HashMap<>();
-        Integer[] activeSensors = ContextAPI.instance.getSensorTypes();
+        ArrayList<Integer> activeSensors = ContextAPI.instance.getSensorTypes();
         for (int type : activeSensors) {
             if (sensorTypes.contains(Integer.toString(type)))
                 outputData.put(type, inputData.get(type));

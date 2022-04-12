@@ -53,11 +53,11 @@ public class ContextAPI extends Service implements ChangeListener {
         sensors.remove(sensor);
     }
 
-    public Integer[] getSensorTypes() {
+    public ArrayList<Integer> getSensorTypes() {
         ArrayList<Integer> types = new ArrayList<>();
         for(SensorInterface sensor : sensors)
             types.add(sensor.getSensorType());
-        return (Integer[])types.toArray();
+        return types;
     }
 
     @Override
