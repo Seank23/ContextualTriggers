@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.IBinder;
 
 import androidx.annotation.Nullable;
@@ -67,7 +68,21 @@ public class NotificationManager extends Service {
 
     public void doNotification() {
         //Need to do notification here
+        NotificationChannel channel = new NotificationChannel("steptriggerNotification", "stepTriggerNotification", android.app.NotificationManager.IMPORTANCE_HIGH);
+        android.app.NotificationManager notificationManager = getSystemService(android.app.NotificationManager.class);
+
+        notificationManager.createNotificationChannel(channel);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this,"steptriggerNotification")
+                .setContentTitle("Test Notification")
+                .setContentText("This is another test for a notification.")
+                .setSmallIcon(R.drawable.notificationlogo);
+
+        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(getApplicationContext());
+        managerCompat.notify(1,builder.build());
     }
+    
+
 
 
     @Nullable

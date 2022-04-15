@@ -57,9 +57,10 @@ public class ServiceManager extends Service {
         String latestTimestamp = ContextAPI.instance.getLatestTimestamp();
         double latestStepCount = ContextAPI.instance.getLatestStepCount();
         HashMap<Integer, Boolean> triggerOutputs = TriggerManager.instance.checkTriggers(currentData);
-        if(triggerOutputs.containsValue(true)) {
+        if(triggerOutputs.containsValue(false)) {
             System.out.println("Triggered.");
-            NotificationManager.instance.sendNotification(triggerOutputs);
+            NotificationManager.instance.doNotification();
+            //NotificationManager.instance.sendNotification(triggerOutputs);
         }
     }
 }
