@@ -66,11 +66,11 @@ public class StepCounter extends Service implements SensorInterface, SensorEvent
         if (sensorEvent.values[0]==0.0) {
             return;
         }
-        System.out.println("Sensor changed.");
+        //System.out.println("Sensor changed.");
         steps = sensorEvent.values[0];
-        timestamp = Instant.now().getEpochSecond();
+        timestamp = System.currentTimeMillis();
         if (listener != null) {
-            listener.onChangeHappened();
+            listener.onChangeHappened(getSensorType());
         }
     }
 

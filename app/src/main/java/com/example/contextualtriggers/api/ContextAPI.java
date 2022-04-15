@@ -22,20 +22,13 @@ import java.util.List;
 public class ContextAPI extends Service implements ChangeListener {
 
     public static ContextAPI instance;
-    private ServiceManager serviceManager;
-
     private stepsRepository sr;
-
     private ArrayList<SensorInterface> sensors;
-
-    int latestStepValue = 0;
-    String latestTimestamp = "";
 
     @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
-        serviceManager = ServiceManager.instance;
         sensors = new ArrayList<>();
         sr = new stepsRepository(getApplication());
     }
@@ -62,7 +55,7 @@ public class ContextAPI extends Service implements ChangeListener {
         return types;
     }
 
-    public String getLatestTimestamp() {
+    public Long getLatestTimestamp() {
         stepsRepository repository = new stepsRepository(getApplication());
         stepsEntity entity = repository.getLatestStepCount();
         return entity.getTimestamp();
@@ -84,10 +77,11 @@ public class ContextAPI extends Service implements ChangeListener {
         List<stepsEntity> steps = getStepsTable();
         HashMap<Integer, SensorData> allData = new HashMap<>();
 
+        // Steps data
         SensorData stepSensorData = new SensorData(0, new ArrayList<>(), new ArrayList<>());
         for(stepsEntity step : steps) {
             stepSensorData.values.add(step.getStepCount());
-            stepSensorData.timestamps.add(Timestamp.valueOf(step.getTimestamp()).getTime());
+            stepSensorData.timestamps.add(step.getTimestamp());
         }
 
         allData.put(0, stepSensorData);
@@ -95,25 +89,15 @@ public class ContextAPI extends Service implements ChangeListener {
     }
 
     @Override
-    public void onChangeHappened() {
-        int type = sensors.get(0).getSensorType();
-        int value = sensors.get(0).getSensorValue();
-        long timestamp = sensors.get(0).getTimestamp();
-        //System.out.println("Type: " + type + " Value: " + value + " Time: " + timestamp);
+    public void onChangeHappened(int type) {
 
-        //Gets most recent entry - compared timestamps and it outputs the values just inserted above.
-        stepsRepository rep = new stepsRepository(getApplication());
-        stepsEntity e = rep.getLatestStepCount();
-        //System.out.println("OTHER: "+e.getTimestamp());
-        int oldVal = e.getStepCount();
-        int diff = value - oldVal;
+        int value = sensors.get(type).getSensorValue();
+        long timestamp = sensors.get(type).getTimestamp();
 
-
-        if (diff > -4) {
-            sr.insert(new stepsEntity(value,new Timestamp(System.currentTimeMillis()).getTime()));
+        switch (type) {
+            case 0:
+                sr.insert(new stepsEntity(value, timestamp));
+                break;
         }
-
-
-
     }
 }

@@ -1,6 +1,7 @@
 package com.example.contextualtriggers;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
@@ -46,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(this, SetupActivity.class));
 
         //Start WorkManager
-
         PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(TriggerWorker.class, 15, TimeUnit.MINUTES).setInitialDelay(20, TimeUnit.SECONDS).build();
         WorkManager.getInstance(getApplicationContext()).enqueue(workRequest);
     }

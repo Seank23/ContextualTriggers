@@ -23,7 +23,6 @@ public class ServiceManager extends Service {
     private HashMap<Integer, SensorData> currentData;
 
     public ServiceManager() {
-
         currentData = new HashMap<>();
     }
 
@@ -31,8 +30,6 @@ public class ServiceManager extends Service {
     public void onCreate() {
         super.onCreate();
         instance = this;
-
-
     }
 
     @Nullable
@@ -41,26 +38,7 @@ public class ServiceManager extends Service {
         return null;
     }
 
-//    public void setData(SensorData data) {
-//
-//        if(!currentData.containsKey(data.type))
-//            currentData.put(data.type, data);
-//        else if(data.timestamp > currentData.get(data.type).timestamp) {
-//            int prevVal = currentData.get(data.type).value;
-//            currentData.replace(data.type, new SensorData(data.type, prevVal + data.value, data.timestamp));
-//        }
-//        if (TriggerManager.instance.checkTriggers(currentData).containsValue(true)) {
-//            System.out.println("Triggered.");
-//            NotificationManager nm = new NotificationManager();
-//            nm.sendNotification(TriggerManager.instance.checkTriggers(currentData));
-//        }
-//    }
-
     public void handleCheckTriggers() {
-
-        // Get data from ContextAPI
-        //String latestTimestamp = ContextAPI.instance.getLatestTimestamp();
-        //double latestStepCount = ContextAPI.instance.getLatestStepCount();
 
         HashMap<Integer, SensorData> sensorData = ContextAPI.instance.getData();
 
