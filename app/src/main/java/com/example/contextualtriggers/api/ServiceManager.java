@@ -6,10 +6,12 @@ import android.os.IBinder;
 import androidx.annotation.Nullable;
 
 import com.example.contextualtriggers.data.SensorData;
+import com.example.contextualtriggers.database.stepsEntity;
 import com.example.contextualtriggers.notification.NotificationInterface;
 import com.example.contextualtriggers.notification.NotificationManager;
 import com.example.contextualtriggers.triggers.TriggerManager;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -57,12 +59,12 @@ public class ServiceManager extends Service {
     public void handleCheckTriggers() {
 
         // Get data from ContextAPI
-        String latestTimestamp = ContextAPI.instance.getLatestTimestamp();
-        double latestStepCount = ContextAPI.instance.getLatestStepCount();
+        //String latestTimestamp = ContextAPI.instance.getLatestTimestamp();
+        //double latestStepCount = ContextAPI.instance.getLatestStepCount();
 
+        HashMap<Integer, SensorData> sensorData = ContextAPI.instance.getData();
 
-
-        HashMap<Integer, Boolean> triggerOutputs = TriggerManager.instance.checkTriggers(currentData);
+        HashMap<Integer, Boolean> triggerOutputs = TriggerManager.instance.checkTriggers(sensorData);
         if(triggerOutputs.containsValue(true)) {
             System.out.println("Triggered.");
             HashMap<Integer, NotificationInterface> triggerNotifications = TriggerManager.instance.getTriggerNotifications(triggerOutputs);

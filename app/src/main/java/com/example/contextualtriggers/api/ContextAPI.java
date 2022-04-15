@@ -16,6 +16,7 @@ import com.example.contextualtriggers.database.stepsRepository;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ContextAPI extends Service implements ChangeListener {
@@ -78,6 +79,21 @@ public class ContextAPI extends Service implements ChangeListener {
         return rep.getStepsTable();
     }
 
+    public HashMap<Integer, SensorData> getData() {
+
+        List<stepsEntity> steps = getStepsTable();
+        HashMap<Integer, SensorData> allData = new HashMap<>();
+
+        SensorData stepSensorData = new SensorData(0, new ArrayList<>(), new ArrayList<>());
+        for(stepsEntity step : steps) {
+            stepSensorData.values.add(step.getStepCount());
+            stepSensorData.timestamps.add(Timestamp.valueOf(step.getTimestamp()).getTime());
+        }
+
+        allData.put(0, stepSensorData);
+        return allData;
+    }
+
     @Override
     public void onChangeHappened() {
         int type = sensors.get(0).getSensorType();
@@ -94,7 +110,7 @@ public class ContextAPI extends Service implements ChangeListener {
 
 
         if (diff > -4) {
-            sr.insert(new stepsEntity(value,String.valueOf(new Timestamp(System.currentTimeMillis()))));
+            sr.insert(new stepsEntity(value,new Timestamp(System.currentTimeMillis()).getTime()));
         }
 
 
