@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import com.example.contextualtriggers.api.ContextAPI;
 import com.example.contextualtriggers.api.SensorInterface;
 import com.example.contextualtriggers.data.SensorData;
+import com.example.contextualtriggers.notification.NotificationInterface;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,6 +52,16 @@ public class TriggerManager extends Service {
             triggerOutput.put(trigger.getId(), output);
         }
         return triggerOutput;
+    }
+
+    public HashMap<Integer, NotificationInterface> getTriggerNotifications(HashMap<Integer, Boolean> triggerStates) {
+
+        HashMap<Integer, NotificationInterface> triggerNotifications = new HashMap<>();
+        for(int key : triggerStates.keySet()) {
+            if(triggerStates.get(key))
+                triggerNotifications.put(key, triggers.get(key).getNotification());
+        }
+        return  triggerNotifications;
     }
 
     private HashMap<Integer, SensorData> getTriggerData(String sensorTypes, HashMap<Integer, SensorData> inputData) {

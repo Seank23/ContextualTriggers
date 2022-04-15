@@ -40,8 +40,8 @@ public class NotificationManager extends Service {
         instance = this;
     }
 
-    public void sendNotification(HashMap<Integer, Boolean> triggers) {
-        Set<Integer> IDs = triggers.keySet();
+    public void sendNotification(HashMap<Integer, NotificationInterface> triggerNotifications) {
+        Set<Integer> IDs = triggerNotifications.keySet();
         //System.out.println("RECEIVED CALL FOR NOTIFICATION");
         stepsRepository sr = new stepsRepository(getApplication());
         notificationEntity ne = new notificationEntity(String.valueOf(new Timestamp(System.currentTimeMillis())),1);
@@ -55,7 +55,7 @@ public class NotificationManager extends Service {
         if (diff>3600000) {
             System.out.println("HOUR PASSED");
 
-            doNotification();
+            doNotification(triggerNotifications.get(0));
 
             notificationEntity notification = new notificationEntity(String.valueOf(new Timestamp(System.currentTimeMillis())),1);
             sr.insert(notification);
@@ -70,17 +70,17 @@ public class NotificationManager extends Service {
     }
 
 
-    public void doNotification() {
+    public void doNotification(NotificationInterface notification) {
         //Need to do notification here
-        NotificationChannel channel = new NotificationChannel("steptriggerNotification", "stepTriggerNotification", android.app.NotificationManager.IMPORTANCE_HIGH);
+        NotificationChannel channel = new NotificationChannel("notificationChannel", "notificationChannel", android.app.NotificationManager.IMPORTANCE_HIGH);
         android.app.NotificationManager notificationManager = getSystemService(android.app.NotificationManager.class);
 
         notificationManager.createNotificationChannel(channel);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this,"steptriggerNotification")
-                .setContentTitle("Do more steps you fat bitch!")
-                .setContentText("You haven't walked in over an hour! You fat.")
-                .setSmallIcon(R.drawable.notificationlogo);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this,"notificationChannel")
+                .setContentTitle(notification.getTitle())
+                .setContentText(notification.getText())
+                .setSmallIcon(notification.getIcon());
 
         NotificationManagerCompat managerCompat = NotificationManagerCompat.from(getApplicationContext());
         managerCompat.notify(1,builder.build());

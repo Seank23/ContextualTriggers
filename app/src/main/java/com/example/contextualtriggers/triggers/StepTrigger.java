@@ -1,6 +1,8 @@
 package com.example.contextualtriggers.triggers;
 
 import com.example.contextualtriggers.data.SensorData;
+import com.example.contextualtriggers.notification.MyNotification;
+import com.example.contextualtriggers.notification.NotificationInterface;
 
 import java.util.HashMap;
 
@@ -10,6 +12,11 @@ public class StepTrigger implements TriggerInterface {
     @Override
     public int getId() {
         return 0;
+    }
+
+    @Override
+    public NotificationInterface getNotification() {
+        return new MyNotification();
     }
 
     @Override
@@ -26,6 +33,6 @@ public class StepTrigger implements TriggerInterface {
 //            System.out.println("Trigger inactive: " + stepsData.value + " steps");
 //            return false;
 //        }
-        return false;
+        return true;
     }
 }
