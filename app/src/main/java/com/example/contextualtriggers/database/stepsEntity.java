@@ -11,9 +11,9 @@ public class stepsEntity {
 
     int stepCount;
 
-    String timestamp;
+    long timestamp;
 
-    public stepsEntity(int stepCount, String timestamp) {
+    public stepsEntity(int stepCount, long timestamp) {
         this.stepCount = stepCount;
         this.timestamp = timestamp;
     }
@@ -22,7 +22,7 @@ public class stepsEntity {
         return stepCount;
     }
 
-    public String getTimestamp() {
+    public Long getTimestamp() {
         return timestamp;
     }
 
@@ -34,7 +34,7 @@ public class stepsEntity {
         this.stepCount = stepCount;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
     }
 }
