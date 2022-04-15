@@ -59,7 +59,7 @@ public class ServiceManager extends Service {
         HashMap<Integer, Boolean> triggerOutputs = TriggerManager.instance.checkTriggers(currentData);
         if(triggerOutputs.containsValue(false)) {
             System.out.println("Triggered.");
-            NotificationManager.instance.doNotification();
+            NotificationManager.instance.sendNotification(triggerOutputs);
             //NotificationManager.instance.sendNotification(triggerOutputs);
         }
     }

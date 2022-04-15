@@ -14,6 +14,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.example.contextualtriggers.MainActivity;
+import com.example.contextualtriggers.R;
 import com.example.contextualtriggers.database.notificationEntity;
 import com.example.contextualtriggers.database.stepsRepository;
 
@@ -58,8 +59,11 @@ public class NotificationManager extends Service {
 
             notificationEntity notification = new notificationEntity(String.valueOf(new Timestamp(System.currentTimeMillis())),1);
             sr.insert(notification);
-            //At this point a notifiation should be sent as an hour has passed, so the user will not be bombarded with notifications
+            //At this point a notification should be sent as an hour has passed, so the user will not be bombarded with notifications
             //Will depend on the triggers that have been triggered, and will favour ones that have not had notifications, other than ones that have sent a notification the last time
+        }
+        else {
+            System.out.println("Hour has not passed.");
         }
         //System.out.println("NOTIFICATION ID: "+lastNotificationID);
         //System.out.println("NOTIFICATION TIMESTAMP: "+lastNotificationTimestamp);
@@ -74,8 +78,8 @@ public class NotificationManager extends Service {
         notificationManager.createNotificationChannel(channel);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this,"steptriggerNotification")
-                .setContentTitle("Test Notification")
-                .setContentText("This is another test for a notification.")
+                .setContentTitle("Do more steps you fat bitch!")
+                .setContentText("You haven't walked in over an hour! You fat.")
                 .setSmallIcon(R.drawable.notificationlogo);
 
         NotificationManagerCompat managerCompat = NotificationManagerCompat.from(getApplicationContext());
