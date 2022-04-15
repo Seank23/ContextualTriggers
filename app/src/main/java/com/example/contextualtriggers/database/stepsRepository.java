@@ -13,6 +13,7 @@ public class stepsRepository {
     private notificationDAO nDao;
 
     private stepsEntity latestStepCount;
+    private List<stepsEntity> stepsTable;
     private notificationEntity latestNotification;
 
     public stepsRepository(Application app) {
@@ -20,8 +21,9 @@ public class stepsRepository {
         sDao = db.sDAO();
         nDao = db.nDAO();
 
-        //Need to get LiveData working for this, should be in background but will only work in main thread
+        
         latestStepCount = sDao.getLastStepCount();
+        stepsTable = sDao.getStepsTable();
         latestNotification = nDao.getLatestNotification();
 
 
@@ -39,6 +41,10 @@ public class stepsRepository {
         //System.out.println("LATEST STEPS COUNT: "+latestStepCount.getTimestamp());
         //System.out.println("LIST SIZE: "+latestStepCount.size());
         return latestStepCount;
+    }
+
+    public List<stepsEntity> getStepsTable() {
+        return stepsTable;
     }
 
     public notificationEntity getLatestNotification() {

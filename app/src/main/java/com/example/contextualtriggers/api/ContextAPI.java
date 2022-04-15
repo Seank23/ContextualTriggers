@@ -16,6 +16,7 @@ import com.example.contextualtriggers.database.stepsRepository;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ContextAPI extends Service implements ChangeListener {
 
@@ -70,6 +71,11 @@ public class ContextAPI extends Service implements ChangeListener {
         stepsRepository repository = new stepsRepository(getApplication());
         stepsEntity entity = repository.getLatestStepCount();
         return entity.getStepCount();
+    }
+
+    public List<stepsEntity> getStepsTable() {
+        stepsRepository rep = new stepsRepository(getApplication());
+        return rep.getStepsTable();
     }
 
     @Override

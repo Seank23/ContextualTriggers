@@ -15,4 +15,7 @@ public interface stepsDAO {
 
     @Query("SELECT * FROM steps_table ORDER BY ID DESC LIMIT 1")
     stepsEntity getLastStepCount();
+
+    @Query("SELECT * FROM steps_table ORDER BY ID DESC")
+    List<stepsEntity> getStepsTable();
 }

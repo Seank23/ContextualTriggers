@@ -12,6 +12,7 @@ import com.example.contextualtriggers.triggers.TriggerManager;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 public class ServiceManager extends Service {
@@ -58,6 +59,9 @@ public class ServiceManager extends Service {
         // Get data from ContextAPI
         String latestTimestamp = ContextAPI.instance.getLatestTimestamp();
         double latestStepCount = ContextAPI.instance.getLatestStepCount();
+
+
+
         HashMap<Integer, Boolean> triggerOutputs = TriggerManager.instance.checkTriggers(currentData);
         if(triggerOutputs.containsValue(true)) {
             System.out.println("Triggered.");
