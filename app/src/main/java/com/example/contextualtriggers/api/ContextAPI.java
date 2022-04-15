@@ -60,6 +60,18 @@ public class ContextAPI extends Service implements ChangeListener {
         return types;
     }
 
+    public String getLatestTimestamp() {
+        stepsRepository repository = new stepsRepository(getApplication());
+        stepsEntity entity = repository.getLatestStepCount();
+        return entity.getTimestamp();
+    }
+
+    public double getLatestStepCount() {
+        stepsRepository repository = new stepsRepository(getApplication());
+        stepsEntity entity = repository.getLatestStepCount();
+        return entity.getStepCount();
+    }
+
     @Override
     public void onChangeHappened() {
         int type = sensors.get(0).getSensorType();

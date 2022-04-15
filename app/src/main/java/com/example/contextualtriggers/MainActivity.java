@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Start WorkManager
 
-        PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(TriggerWorker.class, 15, TimeUnit.MINUTES).setInitialDelay(5, TimeUnit.SECONDS).build();
+        PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(TriggerWorker.class, 15, TimeUnit.MINUTES).setInitialDelay(20, TimeUnit.SECONDS).build();
         WorkManager.getInstance(getApplicationContext()).enqueue(workRequest);
     }
 }
