@@ -45,7 +45,7 @@ public abstract class Database extends RoomDatabase {
         }
         @Override
         protected Void doInBackground(Void... voids) {
-            sDao.insert(new stepsEntity(2,String.valueOf(new Timestamp(System.currentTimeMillis()))));
+            sDao.insert(new stepsEntity(2,new Timestamp(System.currentTimeMillis()).getTime()));
             nDao.insert(new notificationEntity("2022-04-09 10:55:02.793",1));
             return null;
         }

@@ -57,8 +57,7 @@ public class ServiceManager extends Service {
     public void handleCheckTriggers() {
 
         // Get data from ContextAPI
-        String latestTimestamp = ContextAPI.instance.getLatestTimestamp();
-        double latestStepCount = ContextAPI.instance.getLatestStepCount();
+
 
 
 

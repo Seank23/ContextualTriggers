@@ -61,7 +61,7 @@ public class ContextAPI extends Service implements ChangeListener {
         return types;
     }
 
-    public String getLatestTimestamp() {
+    public Long getLatestTimestamp() {
         stepsRepository repository = new stepsRepository(getApplication());
         stepsEntity entity = repository.getLatestStepCount();
         return entity.getTimestamp();
@@ -77,6 +77,7 @@ public class ContextAPI extends Service implements ChangeListener {
         stepsRepository rep = new stepsRepository(getApplication());
         return rep.getStepsTable();
     }
+
 
     @Override
     public void onChangeHappened() {
@@ -94,7 +95,7 @@ public class ContextAPI extends Service implements ChangeListener {
 
 
         if (diff > -4) {
-            sr.insert(new stepsEntity(value,String.valueOf(new Timestamp(System.currentTimeMillis()))));
+            sr.insert(new stepsEntity(value,new Timestamp(System.currentTimeMillis()).getTime()));
         }
 
 
