@@ -16,6 +16,7 @@ import com.example.contextualtriggers.Workers.TriggerWorker;
 import com.example.contextualtriggers.api.ContextAPI;
 import com.example.contextualtriggers.api.ServiceManager;
 import com.example.contextualtriggers.api.StepCounter;
+import com.example.contextualtriggers.api.Weather;
 import com.example.contextualtriggers.notification.NotificationManager;
 import com.example.contextualtriggers.triggers.TriggerInterface;
 import com.example.contextualtriggers.triggers.TriggerManager;
@@ -43,11 +44,13 @@ public class MainActivity extends AppCompatActivity {
         // Start sensors
         startService(new Intent(this, StepCounter.class));
 
+        startService(new Intent(this, Weather.class));
+
         // Start setup
         startActivity(new Intent(this, SetupActivity.class));
 
         //Start WorkManager
-        PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(TriggerWorker.class, 15, TimeUnit.MINUTES).setInitialDelay(20, TimeUnit.SECONDS).build();
+        PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(TriggerWorker.class, 15, TimeUnit.MINUTES).setInitialDelay(1, TimeUnit.MINUTES).build();
         WorkManager.getInstance(getApplicationContext()).enqueue(workRequest);
     }
 }
