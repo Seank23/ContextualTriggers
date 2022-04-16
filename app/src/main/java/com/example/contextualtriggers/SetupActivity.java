@@ -1,7 +1,11 @@
 package com.example.contextualtriggers;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import com.example.contextualtriggers.api.ContextAPI;
@@ -23,5 +27,10 @@ public class SetupActivity extends AppCompatActivity {
         // Add triggers to TriggerManager
         TriggerManager triggerManager = TriggerManager.instance;
         triggerManager.addTrigger(new StepTrigger());
+
+        //Request Permission from user to access location data
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(SetupActivity.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
+        }
     }
 }
