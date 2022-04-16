@@ -23,13 +23,17 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
-public class Weather extends Service {
+public class Weather extends Service implements SensorInterface {
 
     final static String baseURL = "";
 
     private FusedLocationProviderClient client;
     private LocationManager locationManager;
     private LocationListener listener;
+    private ChangeListener changeListener;
+
+    long timestamp = 0;
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -64,7 +68,43 @@ public class Weather extends Service {
 
         return super.onStartCommand(intent, flags, startId);
     }
-    
+
+    @Override
+    public int getSensorType() {
+        return 1;
+    }
+
+    @Override
+    public int getSensorValue() {
+        //Will return 2 values so not sure how to work with this?
+        return 0;
+    }
+
+    @Override
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    @Override
+    public void setSensorType(int sensorType) {
+
+    }
+
+    @Override
+    public void setSensorValue(int sensorValue) {
+
+    }
+
+    @Override
+    public void setTimestamp(long timestamp) {
+
+    }
+
+    @Override
+    public void setChangeListener(ChangeListener listener) {
+        this.changeListener = listener;
+    }
+
     public class LocationListener implements android.location.LocationListener {
 
 
@@ -72,7 +112,8 @@ public class Weather extends Service {
         public void onLocationChanged(@NonNull Location location) {
             System.out.println("LATITUDE: "+location.getLatitude());
             System.out.println("LONGITUDE: "+location.getLongitude());
-            LocationEntity entity = new LocationEntity(System.currentTimeMillis(),location.getLatitude(),location.getLongitude());
+            timestamp = System.currentTimeMillis();
+            LocationEntity entity = new LocationEntity(timestamp,location.getLatitude(),location.getLongitude());
             stepsRepository repository = new stepsRepository(getApplication());
 
             repository.insert(entity);
