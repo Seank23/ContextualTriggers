@@ -1,6 +1,7 @@
-package com.example.contextualtriggers.notification;
+package com.example.contextualtriggers.notifications;
 
 import com.example.contextualtriggers.R;
+import com.example.contextualtriggers.api.NotificationInterface;
 
 public class MyNotification implements NotificationInterface {
 

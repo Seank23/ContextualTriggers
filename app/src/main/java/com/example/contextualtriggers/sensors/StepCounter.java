@@ -1,21 +1,18 @@
-package com.example.contextualtriggers.api;
+package com.example.contextualtriggers.sensors;
 
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.Binder;
 import android.os.IBinder;
 
 import androidx.annotation.Nullable;
 
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.util.Date;
+import com.example.contextualtriggers.api.ChangeListener;
+import com.example.contextualtriggers.api.SensorInterface;
 
 public class StepCounter extends Service implements SensorInterface, SensorEventListener {
 
@@ -24,7 +21,7 @@ public class StepCounter extends Service implements SensorInterface, SensorEvent
     Sensor stepCounter;
     long timestamp = 0;
 
-    double steps = 0.0;
+    int steps = 0;
 
     private ChangeListener listener;
 
@@ -67,7 +64,7 @@ public class StepCounter extends Service implements SensorInterface, SensorEvent
             return;
         }
         //System.out.println("Sensor changed.");
-        steps = sensorEvent.values[0];
+        steps = (int)sensorEvent.values[0];
         timestamp = System.currentTimeMillis();
         if (listener != null) {
             listener.onChangeHappened(getSensorType());
@@ -85,8 +82,8 @@ public class StepCounter extends Service implements SensorInterface, SensorEvent
     }
 
     @Override
-    public int getSensorValue() {
-        return (int) steps;
+    public Object getSensorValue() {
+        return (Object)steps;
     }
 
     @Override
@@ -100,7 +97,7 @@ public class StepCounter extends Service implements SensorInterface, SensorEvent
     }
 
     @Override
-    public void setSensorValue(int sensorValue) {
+    public void setSensorValue(Object sensorValue) {
 
     }
 

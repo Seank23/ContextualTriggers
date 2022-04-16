@@ -28,19 +28,19 @@
             android:name=".api.ContextAPI"
             android:exported="false" />
         <service
-            android:name=".api.StepCounter"
+            android:name=".sensors.StepCounter"
             android:exported="false" />
         <service
             android:name=".api.ServiceManager"
             android:exported="false" />
         <service
-            android:name=".triggers.TriggerManager"
+            android:name=".api.TriggerManager"
             android:exported="false" />
         <service
-            android:name=".notification.NotificationManager"
+            android:name=".api.NotificationManager"
             android:exported="false"/>
         <service
-            android:name=".api.Weather"
+            android:name=".sensors.Weather"
             android:exported="false"/>
     </application>
 

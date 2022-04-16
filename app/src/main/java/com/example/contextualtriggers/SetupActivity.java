@@ -9,9 +9,10 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import com.example.contextualtriggers.api.ContextAPI;
-import com.example.contextualtriggers.api.StepCounter;
+import com.example.contextualtriggers.sensors.StepCounter;
+import com.example.contextualtriggers.sensors.Weather;
 import com.example.contextualtriggers.triggers.StepTrigger;
-import com.example.contextualtriggers.triggers.TriggerManager;
+import com.example.contextualtriggers.api.TriggerManager;
 
 public class SetupActivity extends AppCompatActivity {
 
@@ -23,6 +24,7 @@ public class SetupActivity extends AppCompatActivity {
         // Add sensors to API
         ContextAPI api = ContextAPI.instance;
         api.addSensor(StepCounter.instance);
+        api.addSensor(Weather.instance);
 
         // Add triggers to TriggerManager
         TriggerManager triggerManager = TriggerManager.instance;

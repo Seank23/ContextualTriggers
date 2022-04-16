@@ -1,4 +1,4 @@
-package com.example.contextualtriggers.triggers;
+package com.example.contextualtriggers.api;
 
 import android.app.Service;
 import android.content.Intent;
@@ -6,14 +6,10 @@ import android.os.IBinder;
 
 import androidx.annotation.Nullable;
 
-import com.example.contextualtriggers.api.ContextAPI;
-import com.example.contextualtriggers.api.SensorInterface;
 import com.example.contextualtriggers.data.SensorData;
-import com.example.contextualtriggers.notification.NotificationInterface;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class TriggerManager extends Service {
 

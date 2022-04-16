@@ -1,4 +1,4 @@
-package com.example.contextualtriggers.notification;
+package com.example.contextualtriggers.api;
 
 public interface NotificationInterface {
 

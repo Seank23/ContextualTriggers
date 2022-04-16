@@ -1,8 +1,9 @@
 package com.example.contextualtriggers.triggers;
 
+import com.example.contextualtriggers.api.TriggerInterface;
 import com.example.contextualtriggers.data.SensorData;
-import com.example.contextualtriggers.notification.MyNotification;
-import com.example.contextualtriggers.notification.NotificationInterface;
+import com.example.contextualtriggers.notifications.MyNotification;
+import com.example.contextualtriggers.api.NotificationInterface;
 
 import java.util.HashMap;
 

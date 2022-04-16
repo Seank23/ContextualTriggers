@@ -1,18 +1,16 @@
 package com.example.contextualtriggers.api;
 
-import java.sql.Timestamp;
-
 public interface SensorInterface {
 
     int getSensorType();
 
-    int getSensorValue();
+    Object getSensorValue();
 
     long getTimestamp();
 
     void setSensorType(int sensorType);
 
-    void setSensorValue(int sensorValue);
+    void setSensorValue(Object sensorValue);
 
     void setTimestamp(long timestamp);
 

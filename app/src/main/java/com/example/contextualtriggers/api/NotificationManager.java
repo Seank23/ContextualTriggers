@@ -1,31 +1,21 @@
-package com.example.contextualtriggers.notification;
+package com.example.contextualtriggers.api;
 
-import android.app.Notification;
 import android.app.NotificationChannel;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.IBinder;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import com.example.contextualtriggers.MainActivity;
-import com.example.contextualtriggers.R;
 import com.example.contextualtriggers.database.notificationEntity;
 import com.example.contextualtriggers.database.stepsRepository;
 
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 public class NotificationManager extends Service {
     Context c;

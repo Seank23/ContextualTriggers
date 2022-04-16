@@ -11,6 +11,7 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 
 import com.example.contextualtriggers.data.SensorData;
+import com.example.contextualtriggers.database.LocationEntity;
 import com.example.contextualtriggers.database.stepsEntity;
 import com.example.contextualtriggers.database.stepsRepository;
 
@@ -91,12 +92,17 @@ public class ContextAPI extends Service implements ChangeListener {
     @Override
     public void onChangeHappened(int type) {
 
-        int value = sensors.get(type).getSensorValue();
+        Object value = sensors.get(type).getSensorValue();
         long timestamp = sensors.get(type).getTimestamp();
 
         switch (type) {
             case 0:
-                sr.insert(new stepsEntity(value, timestamp));
+                sr.insert(new stepsEntity((int)value, timestamp));
+                break;
+            case 1:
+                double[] location = (double[])value;
+                sr.insert(new LocationEntity(timestamp, location[0], location[1]));
+                System.out.println("LOCATION: " + location[0] + ", " + location[1]);
                 break;
         }
     }

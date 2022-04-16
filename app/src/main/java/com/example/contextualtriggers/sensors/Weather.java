@@ -1,4 +1,4 @@
-package com.example.contextualtriggers.api;
+package com.example.contextualtriggers.sensors;
 
 import android.Manifest;
 import android.app.Service;
@@ -16,6 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
+import com.example.contextualtriggers.api.ChangeListener;
+import com.example.contextualtriggers.api.SensorInterface;
 import com.example.contextualtriggers.database.LocationEntity;
 import com.example.contextualtriggers.database.stepsRepository;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -27,12 +29,22 @@ public class Weather extends Service implements SensorInterface {
 
     final static String baseURL = "";
 
+    public static Weather instance;
+
     private FusedLocationProviderClient client;
     private LocationManager locationManager;
     private LocationListener listener;
     private ChangeListener changeListener;
 
+    private double[] myLocation;
+
     long timestamp = 0;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        instance = this;
+    }
 
     @Nullable
     @Override
@@ -75,9 +87,9 @@ public class Weather extends Service implements SensorInterface {
     }
 
     @Override
-    public int getSensorValue() {
+    public Object getSensorValue() {
         //Will return 2 values so not sure how to work with this?
-        return 0;
+        return (Object)myLocation;
     }
 
     @Override
@@ -91,7 +103,7 @@ public class Weather extends Service implements SensorInterface {
     }
 
     @Override
-    public void setSensorValue(int sensorValue) {
+    public void setSensorValue(Object sensorValue) {
 
     }
 
@@ -110,17 +122,22 @@ public class Weather extends Service implements SensorInterface {
 
         @Override
         public void onLocationChanged(@NonNull Location location) {
-            System.out.println("LATITUDE: "+location.getLatitude());
-            System.out.println("LONGITUDE: "+location.getLongitude());
+
+            myLocation = new double[] { location.getLatitude(), location.getLongitude() };
             timestamp = System.currentTimeMillis();
-            LocationEntity entity = new LocationEntity(timestamp,location.getLatitude(),location.getLongitude());
-            stepsRepository repository = new stepsRepository(getApplication());
-
-            repository.insert(entity);
-
-            LocationEntity recent = repository.getLatestLocation();
-            System.out.println("RECENT LOCATION: "+recent.getLatitude());
-            System.out.println("TIME: "+recent.getTimestamp());
+            if (changeListener != null) {
+                changeListener.onChangeHappened(getSensorType());
+            }
+//            System.out.println("LATITUDE: " + myLocation[0]);
+//            System.out.println("LONGITUDE: " + myLocation[1]);
+//            timestamp = System.currentTimeMillis();
+//            LocationEntity entity = new LocationEntity(timestamp, myLocation[0], myLocation[1]);
+//            stepsRepository repository = new stepsRepository(getApplication());
+//            repository.insert(entity);
+//
+//            LocationEntity recent = repository.getLatestLocation();
+//            System.out.println("RECENT LOCATION: " + recent.getLatitude());
+//            System.out.println("TIME: " + recent.getTimestamp());
         }
     }
 }
