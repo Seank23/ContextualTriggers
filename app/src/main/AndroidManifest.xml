@@ -39,6 +39,9 @@
         <service
             android:name=".notification.NotificationManager"
             android:exported="false"/>
+        <service
+            android:name=".api.Weather"
+            android:exported="false"/>
     </application>
 
 </manifest>

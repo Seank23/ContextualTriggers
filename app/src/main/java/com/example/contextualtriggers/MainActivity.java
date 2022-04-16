@@ -48,10 +48,10 @@ public class MainActivity extends AppCompatActivity {
         // Start sensors
         startService(new Intent(this, StepCounter.class));
 
-        startService(new Intent(this, Weather.class));
-
         // Start setup
         startActivity(new Intent(this, SetupActivity.class));
+
+        startService(new Intent(this, Weather.class));
 
         //Start WorkManager
         PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(TriggerWorker.class, 15, TimeUnit.MINUTES).setInitialDelay(1, TimeUnit.MINUTES).build();

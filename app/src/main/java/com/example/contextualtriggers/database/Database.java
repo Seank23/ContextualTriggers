@@ -11,12 +11,13 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import java.sql.Time;
 import java.sql.Timestamp;
 
-@androidx.room.Database(entities = {stepsEntity.class,notificationEntity.class}, version=1)
+@androidx.room.Database(entities = {stepsEntity.class,notificationEntity.class,LocationEntity.class}, version=1)
 public abstract class Database extends RoomDatabase {
 
     private static Database instance;
     public abstract stepsDAO sDAO();
     public abstract notificationDAO nDAO();
+    public abstract LocationDAO lDAO();
 
     public static synchronized Database getInstance(Context context) {
         if (instance == null) {

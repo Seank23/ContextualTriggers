@@ -11,20 +11,24 @@ import java.util.List;
 public class stepsRepository {
     private stepsDAO sDao;
     private notificationDAO nDao;
+    private LocationDAO lDao;
 
     private stepsEntity latestStepCount;
     private List<stepsEntity> stepsTable;
     private notificationEntity latestNotification;
+    private LocationEntity latestLocation;
 
     public stepsRepository(Application app) {
         Database db = Database.getInstance(app);
         sDao = db.sDAO();
         nDao = db.nDAO();
+        lDao = db.lDAO();
 
         
         latestStepCount = sDao.getLastStepCount();
         stepsTable = sDao.getStepsTable();
         latestNotification = nDao.getLatestNotification();
+        latestLocation = lDao.getLatestLocation();
 
 
 
@@ -35,6 +39,8 @@ public class stepsRepository {
     }
 
     public void insert(notificationEntity notification) {new InsertNotificationASyncTask(nDao).execute(notification);}
+
+    public void insert(LocationEntity location) { new InsertLocationASyncTask(lDao).execute(location);}
 
     public stepsEntity getLatestStepCount() {
         //System.out.println("LATEST STEPS COUNT: "+latestStepCount.getStepCount());
@@ -50,6 +56,8 @@ public class stepsRepository {
     public notificationEntity getLatestNotification() {
         return latestNotification;
     }
+
+    public LocationEntity getLatestLocation() { return latestLocation; }
 
 
     private static class InsertStepsASyncTask extends AsyncTask<stepsEntity, Void, Void> {
@@ -79,6 +87,18 @@ public class stepsRepository {
         protected Void doInBackground(notificationEntity... notificationEntities) {
             nDao.insert(notificationEntities[0]);
             System.out.println("Notification added to DB");
+            return null;
+        }
+    }
+
+    private static class InsertLocationASyncTask extends AsyncTask<LocationEntity,Void,Void> {
+        private LocationDAO lDao;
+        private InsertLocationASyncTask(LocationDAO lDao) {this.lDao = lDao;}
+
+        @Override
+        protected Void doInBackground(LocationEntity... locationEntities) {
+            lDao.insert(locationEntities[0]);
+            System.out.println("Location updated and inserted to DB");
             return null;
         }
     }

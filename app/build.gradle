@@ -77,4 +77,6 @@ dependencies {
     // optional - Multiprocess support
     implementation "androidx.work:work-multiprocess:$work_version"
 
+    implementation "com.google.android.gms:play-services-location:19.0.1"
+
 }
