@@ -10,7 +10,7 @@ import android.os.Bundle;
 
 import com.example.contextualtriggers.api.ContextAPI;
 import com.example.contextualtriggers.sensors.StepCounter;
-import com.example.contextualtriggers.sensors.Weather;
+import com.example.contextualtriggers.sensors.Location;
 import com.example.contextualtriggers.triggers.StepTrigger;
 import com.example.contextualtriggers.api.TriggerManager;
 
@@ -24,15 +24,13 @@ public class SetupActivity extends AppCompatActivity {
         // Add sensors to API
         ContextAPI api = ContextAPI.instance;
         api.addSensor(StepCounter.instance);
-        api.addSensor(Weather.instance);
+        api.addSensor(Location.instance);
 
         // Add triggers to TriggerManager
         TriggerManager triggerManager = TriggerManager.instance;
         triggerManager.addTrigger(new StepTrigger());
 
         //Request Permission from user to access location data
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(SetupActivity.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
-        }
+
     }
 }

@@ -5,10 +5,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
-import android.location.LocationRequest;
 import android.net.Uri;
 import android.os.IBinder;
 
@@ -18,18 +15,14 @@ import androidx.core.content.ContextCompat;
 
 import com.example.contextualtriggers.api.ChangeListener;
 import com.example.contextualtriggers.api.SensorInterface;
-import com.example.contextualtriggers.database.LocationEntity;
-import com.example.contextualtriggers.database.stepsRepository;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 
-public class Weather extends Service implements SensorInterface {
+public class Location extends Service implements SensorInterface {
 
     final static String baseURL = "";
 
-    public static Weather instance;
+    public static Location instance;
 
     private FusedLocationProviderClient client;
     private LocationManager locationManager;
@@ -63,12 +56,11 @@ public class Weather extends Service implements SensorInterface {
         listener = new LocationListener();
 
 
-
-
-
-
-
-
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             //double lat = client.getLastLocation().getResult().getLatitude();
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,4000,0,listener);
@@ -121,7 +113,7 @@ public class Weather extends Service implements SensorInterface {
 
 
         @Override
-        public void onLocationChanged(@NonNull Location location) {
+        public void onLocationChanged(@NonNull android.location.Location location) {
 
             myLocation = new double[] { location.getLatitude(), location.getLongitude() };
             timestamp = System.currentTimeMillis();
