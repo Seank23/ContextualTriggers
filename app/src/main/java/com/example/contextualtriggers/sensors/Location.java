@@ -63,7 +63,7 @@ public class Location extends Service implements SensorInterface {
         }
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             //double lat = client.getLastLocation().getResult().getLatitude();
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,4000,0,listener);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,5000,0,listener);
 
         }
 

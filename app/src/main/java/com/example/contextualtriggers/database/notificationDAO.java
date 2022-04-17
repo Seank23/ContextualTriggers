@@ -12,4 +12,7 @@ public interface notificationDAO {
 
     @Query("SELECT * FROM notification_table ORDER BY ID DESC LIMIT 1")
     notificationEntity getLatestNotification();
+
+    @Query("SELECT notificationID FROM notification_table ORDER BY ID DESC")
+    int[] getAllNotification();
 }

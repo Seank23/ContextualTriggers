@@ -8,16 +8,15 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 
-@androidx.room.Database(entities = {stepsEntity.class,notificationEntity.class,LocationEntity.class}, version=1)
+@androidx.room.Database(entities = {stepsEntity.class, notificationEntity.class, WeatherEntity.class}, version=1)
 public abstract class Database extends RoomDatabase {
 
     private static Database instance;
     public abstract stepsDAO sDAO();
     public abstract notificationDAO nDAO();
-    public abstract LocationDAO lDAO();
+    public abstract WeatherDAO wDAO();
 
     public static synchronized Database getInstance(Context context) {
         if (instance == null) {
@@ -47,7 +46,7 @@ public abstract class Database extends RoomDatabase {
         @Override
         protected Void doInBackground(Void... voids) {
             sDao.insert(new stepsEntity(2,new Timestamp(System.currentTimeMillis()).getTime()));
-            nDao.insert(new notificationEntity("2022-04-09 10:55:02.793",1));
+            nDao.insert(new notificationEntity("2022-04-09 10:55:02.793",0));
             return null;
         }
     }

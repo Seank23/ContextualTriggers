@@ -11,6 +11,7 @@ import android.os.Bundle;
 import com.example.contextualtriggers.api.ContextAPI;
 import com.example.contextualtriggers.sensors.StepCounter;
 import com.example.contextualtriggers.sensors.Location;
+import com.example.contextualtriggers.triggers.GoodWeatherTrigger;
 import com.example.contextualtriggers.triggers.StepTrigger;
 import com.example.contextualtriggers.api.TriggerManager;
 
@@ -21,6 +22,16 @@ public class SetupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup);
 
+        //Request Permission from user to access location data
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(SetupActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
         // Add sensors to API
         ContextAPI api = ContextAPI.instance;
         api.addSensor(StepCounter.instance);
@@ -29,8 +40,6 @@ public class SetupActivity extends AppCompatActivity {
         // Add triggers to TriggerManager
         TriggerManager triggerManager = TriggerManager.instance;
         triggerManager.addTrigger(new StepTrigger());
-
-        //Request Permission from user to access location data
-
+        triggerManager.addTrigger(new GoodWeatherTrigger());
     }
 }
