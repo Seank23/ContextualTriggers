@@ -12,11 +12,7 @@ import java.util.HashMap;
 public class ServiceManager extends Service {
 
     public static ServiceManager instance;
-    private HashMap<Integer, SensorData> currentData;
-
-    public ServiceManager() {
-        currentData = new HashMap<>();
-    }
+    public static boolean isInvoked = false;
 
     @Override
     public void onCreate() {
@@ -32,13 +28,17 @@ public class ServiceManager extends Service {
 
     public void handleCheckTriggers() {
 
-        HashMap<Integer, SensorData> sensorData = ContextAPI.instance.getData();
+        if(!isInvoked) {
+            isInvoked = true;
+            HashMap<Integer, SensorData> sensorData = ContextAPI.instance.getData();
 
-        HashMap<Integer, Boolean> triggerOutputs = TriggerManager.instance.checkTriggers(sensorData);
-        if(triggerOutputs.containsValue(true)) {
-            System.out.println("Triggered.");
-            HashMap<Integer, NotificationInterface> triggerNotifications = TriggerManager.instance.getTriggerNotifications(triggerOutputs);
-            NotificationManager.instance.sendNotification(triggerNotifications);
+            HashMap<Integer, Boolean> triggerOutputs = TriggerManager.instance.checkTriggers(sensorData);
+            if (triggerOutputs.containsValue(true)) {
+                System.out.println("Triggered.");
+                HashMap<Integer, NotificationInterface> triggerNotifications = TriggerManager.instance.getTriggerNotifications(triggerOutputs);
+                NotificationManager.instance.sendNotification(triggerNotifications);
+            }
+            isInvoked = false;
         }
     }
 }

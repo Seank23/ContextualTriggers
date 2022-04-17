@@ -95,6 +95,10 @@ public class ContextAPI extends Service implements ChangeListener {
         return sr.getLatestNotification();
     }
 
+    public String getLatestNotificationTimeByID(int id) {
+        return  sr.getLatestNotificationTimeByID(id);
+    }
+
     public HashMap<Integer, SensorData> getData() {
 
         List<stepsEntity> steps = sr.getStepsTable();

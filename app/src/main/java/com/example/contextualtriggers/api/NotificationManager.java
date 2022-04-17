@@ -10,22 +10,18 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import com.example.contextualtriggers.database.notificationEntity;
-import com.example.contextualtriggers.database.stepsRepository;
-
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class NotificationManager extends Service {
     Context c;
 
     public static NotificationManager instance;
 
-    private static final int STEPS_TRIGGER_ID = 1;
+    private static final int NOTIFICATION_TIMEOUT = 3600000; // 1 hour
 
     @Override
     public void onCreate() {
@@ -36,53 +32,45 @@ public class NotificationManager extends Service {
     public void sendNotification(HashMap<Integer, NotificationInterface> triggerNotifications) {
 
         Object[] activeTriggers = triggerNotifications.keySet().toArray();
-        int notificationToSend = 0;
+        Map<Integer, Integer> notificationsSent = ContextAPI.instance.getNotificationsSent();
 
-        HashMap<Integer, Integer> notificationsSent = ContextAPI.instance.getNotificationsSent();
-        notificationEntity latestNotification = ContextAPI.instance.getLatestNotification();
-
-        if(activeTriggers.length == 1)
-            notificationToSend = (int)activeTriggers[0];
-        else if(activeTriggers.length > 1) {
-
-            for(int i = 0; i < activeTriggers.length; i++) {
-                if(!notificationsSent.containsKey((int)activeTriggers[i]))
-                    notificationsSent.put((int)activeTriggers[i], 0);
-            }
-
-            notificationsSent.entrySet().stream()
-                    .sorted((k1, k2) -> -k1.getValue().compareTo(k2.getValue()))
-                    .forEach(k -> System.out.println(k.getKey() + ": " + k.getValue()));
-
-            if(latestNotification != null)
-                notificationsSent.remove(latestNotification.getNotificationID());
-            List keys = new ArrayList(notificationsSent.keySet());
-            notificationToSend = (int)keys.get(0);
+        // Add new triggers to array with frequency of 0
+        for(int i = 0; i < activeTriggers.length; i++) {
+            if(!notificationsSent.containsKey((int)activeTriggers[i]))
+                notificationsSent.put((int)activeTriggers[i], 0);
         }
 
-        doNotification(triggerNotifications.get(notificationToSend));
-        ContextAPI.instance.recordNotification(notificationToSend);
+        LinkedHashMap<Integer, Integer> orderedFrequencies = new LinkedHashMap<>();
 
-//        int lastNotificationID = sr.getLatestNotification().getNotificationID();
-//        String lastNotificationTimestamp = sr.getLatestNotification().getNotificationTimestamp();
-//        long tempLastValue = Timestamp.valueOf(lastNotificationTimestamp).getTime();
-//        long tempNewValue = new Timestamp(System.currentTimeMillis()).getTime();
-//
-//        long diff = tempNewValue-tempLastValue;
-//        if (diff>3600000) {
-//            System.out.println("HOUR PASSED");
-//
-//            doNotification(triggerNotifications.get(0));
-//
-//            ContextAPI.instance.recordNotification();
-//            //At this point a notification should be sent as an hour has passed, so the user will not be bombarded with notifications
-//            //Will depend on the triggers that have been triggered, and will favour ones that have not had notifications, other than ones that have sent a notification the last time
-//        }
-//        else {
-//            System.out.println("Hour has not passed.");
-//        }
-        //System.out.println("NOTIFICATION ID: "+lastNotificationID);
-        //System.out.println("NOTIFICATION TIMESTAMP: "+lastNotificationTimestamp);
+        // Sort notification frequencies ascending
+        notificationsSent.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue())
+                .forEachOrdered(x -> orderedFrequencies.put(x.getKey(), x.getValue()));
+
+        // Trigger is only valid if its latest notification was sent a while ago
+        ArrayList<Integer> validTriggers = new ArrayList<>();
+        for(int id : orderedFrequencies.keySet()) {
+            String latestTimestamp = ContextAPI.instance.getLatestNotificationTimeByID(id);
+            if(latestTimestamp == null) { // No previous notification; so valid
+                validTriggers.add(id);
+                continue;
+            }
+            if(System.currentTimeMillis() - Timestamp.valueOf(latestTimestamp).getTime() > NOTIFICATION_TIMEOUT)
+                validTriggers.add(id);
+        }
+
+        if(validTriggers.isEmpty()) {
+            System.out.println("No notification was sent");
+            return;
+        }
+
+        int sendID = validTriggers.get(0);
+        if(triggerNotifications.containsKey(sendID)) {
+            System.out.println("Notification (ID: " + sendID + ") was sent");
+            doNotification(triggerNotifications.get(sendID));
+            ContextAPI.instance.recordNotification(sendID);
+        }
     }
 
 

@@ -29,7 +29,7 @@ public class GoodWeatherTrigger implements TriggerInterface {
     @Override
     public boolean checkTrigger(HashMap<Integer, SensorData> data) {
 
-        List<String> goodWeather = Arrays.asList("Clear", "Cloudy");
+        List<String> goodWeather = Arrays.asList("Clear", "Clouds");
         SensorData weatherData = data.get(1);
 
         if(weatherData != null) {

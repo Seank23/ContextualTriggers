@@ -67,6 +67,7 @@ public class stepsRepository {
 
     public WeatherEntity getLatestWeather() { return latestWeather; }
 
+    public String getLatestNotificationTimeByID(int id) { return nDao.getLatestNotificationTimeByID(id);}
 
     private static class InsertStepsASyncTask extends AsyncTask<stepsEntity, Void, Void> {
 
@@ -80,8 +81,8 @@ public class stepsRepository {
         protected Void doInBackground(stepsEntity... stepsEntities) {
             sDao.insert(stepsEntities[0]);
 
-            System.out.println("Value added: "+stepsEntities[0].getStepCount());
-            System.out.println("TIMESTAMP: "+stepsEntities[0].getTimestamp());
+            //System.out.println("Value added: "+stepsEntities[0].getStepCount());
+            //System.out.println("TIMESTAMP: "+stepsEntities[0].getTimestamp());
             return null;
         }
     }

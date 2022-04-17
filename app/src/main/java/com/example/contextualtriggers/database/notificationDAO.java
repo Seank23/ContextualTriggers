@@ -15,4 +15,7 @@ public interface notificationDAO {
 
     @Query("SELECT notificationID FROM notification_table ORDER BY ID DESC")
     int[] getAllNotification();
+
+    @Query("SELECT notificationTimestamp FROM notification_table WHERE notificationID = :id ORDER BY ID DESC")
+    String getLatestNotificationTimeByID(int id);
 }
