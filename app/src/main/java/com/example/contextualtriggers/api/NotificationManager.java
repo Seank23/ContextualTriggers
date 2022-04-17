@@ -14,7 +14,10 @@ import com.example.contextualtriggers.database.notificationEntity;
 import com.example.contextualtriggers.database.stepsRepository;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 public class NotificationManager extends Service {
@@ -31,30 +34,53 @@ public class NotificationManager extends Service {
     }
 
     public void sendNotification(HashMap<Integer, NotificationInterface> triggerNotifications) {
-        Set<Integer> IDs = triggerNotifications.keySet();
-        //System.out.println("RECEIVED CALL FOR NOTIFICATION");
-        stepsRepository sr = new stepsRepository(getApplication());
-        notificationEntity ne = new notificationEntity(String.valueOf(new Timestamp(System.currentTimeMillis())),1);
 
-        int lastNotificationID = sr.getLatestNotification().getNotificationID();
-        String lastNotificationTimestamp = sr.getLatestNotification().getNotificationTimestamp();
-        long tempLastValue = Timestamp.valueOf(lastNotificationTimestamp).getTime();
-        long tempNewValue = new Timestamp(System.currentTimeMillis()).getTime();
+        Object[] activeTriggers = triggerNotifications.keySet().toArray();
+        int notificationToSend = 0;
 
-        long diff = tempNewValue-tempLastValue;
-        if (diff>3600000) {
-            System.out.println("HOUR PASSED");
+        HashMap<Integer, Integer> notificationsSent = ContextAPI.instance.getNotificationsSent();
+        notificationEntity latestNotification = ContextAPI.instance.getLatestNotification();
 
-            doNotification(triggerNotifications.get(0));
+        if(activeTriggers.length == 1)
+            notificationToSend = (int)activeTriggers[0];
+        else if(activeTriggers.length > 1) {
 
-            notificationEntity notification = new notificationEntity(String.valueOf(new Timestamp(System.currentTimeMillis())),1);
-            sr.insert(notification);
-            //At this point a notification should be sent as an hour has passed, so the user will not be bombarded with notifications
-            //Will depend on the triggers that have been triggered, and will favour ones that have not had notifications, other than ones that have sent a notification the last time
+            for(int i = 0; i < activeTriggers.length; i++) {
+                if(!notificationsSent.containsKey((int)activeTriggers[i]))
+                    notificationsSent.put((int)activeTriggers[i], 0);
+            }
+
+            notificationsSent.entrySet().stream()
+                    .sorted((k1, k2) -> -k1.getValue().compareTo(k2.getValue()))
+                    .forEach(k -> System.out.println(k.getKey() + ": " + k.getValue()));
+
+            if(latestNotification != null)
+                notificationsSent.remove(latestNotification.getNotificationID());
+            List keys = new ArrayList(notificationsSent.keySet());
+            notificationToSend = (int)keys.get(0);
         }
-        else {
-            System.out.println("Hour has not passed.");
-        }
+
+        doNotification(triggerNotifications.get(notificationToSend));
+        ContextAPI.instance.recordNotification(notificationToSend);
+
+//        int lastNotificationID = sr.getLatestNotification().getNotificationID();
+//        String lastNotificationTimestamp = sr.getLatestNotification().getNotificationTimestamp();
+//        long tempLastValue = Timestamp.valueOf(lastNotificationTimestamp).getTime();
+//        long tempNewValue = new Timestamp(System.currentTimeMillis()).getTime();
+//
+//        long diff = tempNewValue-tempLastValue;
+//        if (diff>3600000) {
+//            System.out.println("HOUR PASSED");
+//
+//            doNotification(triggerNotifications.get(0));
+//
+//            ContextAPI.instance.recordNotification();
+//            //At this point a notification should be sent as an hour has passed, so the user will not be bombarded with notifications
+//            //Will depend on the triggers that have been triggered, and will favour ones that have not had notifications, other than ones that have sent a notification the last time
+//        }
+//        else {
+//            System.out.println("Hour has not passed.");
+//        }
         //System.out.println("NOTIFICATION ID: "+lastNotificationID);
         //System.out.println("NOTIFICATION TIMESTAMP: "+lastNotificationTimestamp);
     }

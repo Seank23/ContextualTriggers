@@ -1,17 +1,15 @@
 package com.example.contextualtriggers.api;
 
 import android.app.Service;
-import android.content.ComponentName;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.IBinder;
 
 import androidx.annotation.Nullable;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
 
 import com.example.contextualtriggers.data.SensorData;
 import com.example.contextualtriggers.database.LocationEntity;
+import com.example.contextualtriggers.database.WeatherEntity;
+import com.example.contextualtriggers.database.notificationEntity;
 import com.example.contextualtriggers.database.stepsEntity;
 import com.example.contextualtriggers.database.stepsRepository;
 
@@ -73,10 +71,34 @@ public class ContextAPI extends Service implements ChangeListener {
 //        return rep.getStepsTable();
 //    }
 
+    public void recordNotification(int id) {
+        notificationEntity notification = new notificationEntity(String.valueOf(new Timestamp(System.currentTimeMillis())), id);
+        sr.insert(notification);
+    }
+
+    public HashMap<Integer, Integer> getNotificationsSent() {
+
+        HashMap<Integer, Integer> notificationsSent = new HashMap<>();
+        int[] notificationIds = sr.getNotificationIds();
+        for(int id : notificationIds) {
+            if(notificationsSent.containsKey(id)) {
+                int val = notificationsSent.get(id);
+                val++;
+                notificationsSent.put(id, val);
+            } else
+                notificationsSent.put(id, 1);
+        }
+        return notificationsSent;
+    }
+
+    public notificationEntity getLatestNotification() {
+        return sr.getLatestNotification();
+    }
+
     public HashMap<Integer, SensorData> getData() {
 
         List<stepsEntity> steps = sr.getStepsTable();
-        LocationEntity location = sr.getLatestLocation();
+        WeatherEntity weather = sr.getLatestWeather();
         HashMap<Integer, SensorData> allData = new HashMap<>();
 
         // Steps data
@@ -86,13 +108,13 @@ public class ContextAPI extends Service implements ChangeListener {
             stepSensorData.timestamps.add(step.getTimestamp());
         }
 
-        // Location data
-        SensorData locationSensorData = new SensorData(1, new ArrayList<>(), new ArrayList<>());
-        locationSensorData.values.add(new double[] { location.getLatitude(), location.getLongitude() });
-        locationSensorData.timestamps.add(location.getTimestamp());
+        // Weather data
+        SensorData weatherSensorData = new SensorData(1, new ArrayList<>(), new ArrayList<>());
+        weatherSensorData.values.add(weather.getWeather());
+        weatherSensorData.timestamps.add(weather.getTimestamp());
 
         allData.put(0, stepSensorData);
-        allData.put(1, locationSensorData);
+        allData.put(1, weatherSensorData);
         return allData;
     }
 

@@ -40,7 +40,7 @@
             android:name=".api.NotificationManager"
             android:exported="false"/>
         <service
-            android:name=".sensors.Weather"
+            android:name=".sensors.Location"
             android:exported="false"/>
     </application>
 
