@@ -56,26 +56,27 @@ public class ContextAPI extends Service implements ChangeListener {
         return types;
     }
 
-    public Long getLatestTimestamp() {
-        stepsRepository repository = new stepsRepository(getApplication());
-        stepsEntity entity = repository.getLatestStepCount();
-        return entity.getTimestamp();
-    }
-
-    public double getLatestStepCount() {
-        stepsRepository repository = new stepsRepository(getApplication());
-        stepsEntity entity = repository.getLatestStepCount();
-        return entity.getStepCount();
-    }
-
-    public List<stepsEntity> getStepsTable() {
-        stepsRepository rep = new stepsRepository(getApplication());
-        return rep.getStepsTable();
-    }
+//    public Long getLatestTimestamp() {
+//        stepsRepository repository = new stepsRepository(getApplication());
+//        stepsEntity entity = repository.getLatestStepCount();
+//        return entity.getTimestamp();
+//    }
+//
+//    public double getLatestStepCount() {
+//        stepsRepository repository = new stepsRepository(getApplication());
+//        stepsEntity entity = repository.getLatestStepCount();
+//        return entity.getStepCount();
+//    }
+//
+//    public List<stepsEntity> getStepsTable() {
+//        stepsRepository rep = new stepsRepository(getApplication());
+//        return rep.getStepsTable();
+//    }
 
     public HashMap<Integer, SensorData> getData() {
 
-        List<stepsEntity> steps = getStepsTable();
+        List<stepsEntity> steps = sr.getStepsTable();
+        LocationEntity location = sr.getLatestLocation();
         HashMap<Integer, SensorData> allData = new HashMap<>();
 
         // Steps data
@@ -85,7 +86,13 @@ public class ContextAPI extends Service implements ChangeListener {
             stepSensorData.timestamps.add(step.getTimestamp());
         }
 
+        // Location data
+        SensorData locationSensorData = new SensorData(1, new ArrayList<>(), new ArrayList<>());
+        locationSensorData.values.add(new double[] { location.getLatitude(), location.getLongitude() });
+        locationSensorData.timestamps.add(location.getTimestamp());
+
         allData.put(0, stepSensorData);
+        allData.put(1, locationSensorData);
         return allData;
     }
 
