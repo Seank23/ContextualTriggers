@@ -38,15 +38,18 @@ public abstract class Database extends RoomDatabase {
     private static class populateDBAsyncTask extends AsyncTask<Void,Void,Void> {
         private stepsDAO sDao;
         private notificationDAO nDao;
+        private WeatherDAO wDao;
 
         private populateDBAsyncTask(Database db) {
             sDao = db.sDAO();
             nDao = db.nDAO();
+            wDao = db.wDAO();
         }
         @Override
         protected Void doInBackground(Void... voids) {
             sDao.insert(new stepsEntity(2,new Timestamp(System.currentTimeMillis()).getTime()));
             nDao.insert(new notificationEntity("2022-04-09 10:55:02.793",0));
+            wDao.insert(new WeatherEntity(System.currentTimeMillis(),"Clear"));
             return null;
         }
     }
