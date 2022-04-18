@@ -3,7 +3,7 @@ package com.example.contextualtriggers.notifications;
 import com.example.contextualtriggers.R;
 import com.example.contextualtriggers.framework.NotificationInterface;
 
-public class MyNotification implements NotificationInterface {
+public class InactivityNotification implements NotificationInterface {
 
     @Override
     public String getTitle() {

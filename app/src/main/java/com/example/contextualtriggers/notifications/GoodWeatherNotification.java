@@ -11,7 +11,7 @@ public class GoodWeatherNotification implements NotificationInterface {
 
     @Override
     public String getText() {
-        return "The weather over the next hour is meant to be nice at your current location! Why not go for a walk and boost your step count?";
+        return "You have reached your step target but the weather is still looking nice, why not go for a walk";
     }
 
     @Override

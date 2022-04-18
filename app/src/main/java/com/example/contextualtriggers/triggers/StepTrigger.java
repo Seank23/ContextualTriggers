@@ -2,7 +2,7 @@ package com.example.contextualtriggers.triggers;
 
 import com.example.contextualtriggers.framework.TriggerInterface;
 import com.example.contextualtriggers.data.SensorData;
-import com.example.contextualtriggers.notifications.MyNotification;
+import com.example.contextualtriggers.notifications.InactivityNotification;
 import com.example.contextualtriggers.framework.NotificationInterface;
 
 import java.util.HashMap;
@@ -16,7 +16,7 @@ public class StepTrigger implements TriggerInterface {
 
     @Override
     public NotificationInterface getNotification() {
-        return new MyNotification();
+        return new InactivityNotification();
     }
 
     @Override

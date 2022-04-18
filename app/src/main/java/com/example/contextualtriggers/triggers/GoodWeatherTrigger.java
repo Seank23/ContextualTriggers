@@ -22,7 +22,7 @@ public class GoodWeatherTrigger implements TriggerInterface {
 
     @Override
     public String getSensorsRequired() {
-        return "1";
+        return "01";
     }
 
     @Override
@@ -33,14 +33,18 @@ public class GoodWeatherTrigger implements TriggerInterface {
     @Override
     public boolean checkTrigger(HashMap<Integer, SensorData> data) {
 
-        List<String> goodWeather = Arrays.asList("Clear", "Clouds");
+        SensorData stepsData = data.get(0);
         SensorData weatherData = data.get(1);
-        if(weatherData == null)
+        if(stepsData == null || weatherData == null)
             return false;
         if(weatherData.values.isEmpty())
             return false;
 
-        if (goodWeather.contains((String) weatherData.values.get(0)))
+        List<String> goodWeather = Arrays.asList("Clear", "Clouds");
+        int stepTarget = 10000;
+        int latestStepCount = (int)stepsData.values.get(0);
+
+        if (latestStepCount > stepTarget && goodWeather.contains((String) weatherData.values.get(0)))
             return true;
 
         return false;
