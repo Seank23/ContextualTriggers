@@ -42,6 +42,8 @@ public class SunsetTimeTrigger implements TriggerInterface {
         SensorData sunsetData = data.get(2);
         if(sunsetData == null)
             return false;
+        if(sunsetData.values.isEmpty())
+            return false;
 
         long timeThreshold = 10800; // 3 hours
         String currentTime = new SimpleDateFormat("HH:mm:ss").format(System.currentTimeMillis());

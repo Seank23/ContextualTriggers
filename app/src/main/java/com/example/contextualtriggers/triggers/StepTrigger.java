@@ -34,6 +34,8 @@ public class StepTrigger implements TriggerInterface {
         SensorData stepsData = data.get(0);
         if(stepsData == null)
             return false;
+        if(stepsData.values.isEmpty())
+            return false;
 
         long timeThreshold = 3600000; // 1 hour
         long currentTime = System.currentTimeMillis();

@@ -41,6 +41,8 @@ public class GoodWeatherReachTargetTrigger implements TriggerInterface {
         SensorData weatherData = data.get(1);
         if(stepsData == null || weatherData == null)
             return false;
+        if(stepsData.values.isEmpty() || weatherData.values.isEmpty())
+            return false;
 
         List<String> goodWeather = Arrays.asList("Clear", "Clouds");
         int stepTarget = 10000;

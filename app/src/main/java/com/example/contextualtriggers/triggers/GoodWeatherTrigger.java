@@ -38,6 +38,8 @@ public class GoodWeatherTrigger implements TriggerInterface {
         SensorData weatherData = data.get(1);
         if(weatherData == null)
             return false;
+        if(weatherData.values.isEmpty())
+            return false;
 
         if (goodWeather.contains((String) weatherData.values.get(0)))
             return true;

@@ -116,17 +116,17 @@ public class ContextAPI extends Service implements ChangeListener {
             sunsetSensorData.timestamps.add(sunset.getTimestamp());
         }
 
-        System.out.println("------");
-        System.out.println("Steps:");
-        for(Object val : stepSensorData.values)
-            System.out.print(val + " ");
-        System.out.println("\nWeather:");
-        for(Object val : weatherSensorData.values)
-            System.out.print(val + " ");
-        System.out.println("\nSunset:");
-        for(Object val : sunsetSensorData.values)
-            System.out.print(val + " ");
-        System.out.println("\n------");
+//        System.out.println("------");
+//        System.out.println("Steps:");
+//        for(Object val : stepSensorData.values)
+//            System.out.print(val + " ");
+//        System.out.println("\nWeather:");
+//        for(Object val : weatherSensorData.values)
+//            System.out.print(val + " ");
+//        System.out.println("\nSunset:");
+//        for(Object val : sunsetSensorData.values)
+//            System.out.print(val + " ");
+//        System.out.println("\n------");
 
         allData.put(0, stepSensorData);
         allData.put(1, weatherSensorData);
