@@ -174,36 +174,24 @@ public class stepsRepository {
         @Override
         protected Void doInBackground(LocationEntity... locationEntities) {
 
-            String str = String.format("https://api.sunrise-sunset.org/json?lat=%s&lng=%s",
-                    locationEntities[0].getLatitude(), locationEntities[0].getLongitude());
+            String key = "2d078b62d6cf49debbd62eead6ef7551";
+            String str = String.format("https://api.ipgeolocation.io/astronomy?apiKey=%s&lat=%s&long=%s",
+                    key, locationEntities[0].getLatitude(), locationEntities[0].getLongitude());
             String response, sunset = null;
             try {
                 URI myUri = new URI(str);
                 response = getResponseFromHttpUrl(myUri.toURL());
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    sunset = (String)jsonObject.getJSONObject("results").get("sunset");
+                    sunset = (String)jsonObject.get("sunset");
                 }catch (JSONException err){
                     Log.d("Error", err.toString());
                 }
-                String sunsetFormatted = "";
-                String AMorPM = sunset.substring(sunset.length() - 3);
-                sunset = sunset.substring(0, sunset.length() - 3);
-                String[] sunsetSplit = sunset.split(":");
-                int h = Integer.parseInt(sunsetSplit[0]);
-                int m = Integer.parseInt(sunsetSplit[1]);
-                int s = Integer.parseInt(sunsetSplit[2]);
-                if(AMorPM.contains("PM"))
-                    h += 12;
-                if(h < 10)
-                    sunsetFormatted = "0" + h + ":" + m + ":" + s;
-                else
-                    sunsetFormatted = h + ":" + m + ":" + s;
-
-                SunsetTimeEntity sunsetTimeEntity = new SunsetTimeEntity(System.currentTimeMillis(), sunsetFormatted);
+                sunset = sunset + ":00";
+                SunsetTimeEntity sunsetTimeEntity = new SunsetTimeEntity(System.currentTimeMillis(), sunset);
                 stDao.insert(sunsetTimeEntity);
                 System.out.println("Sunset time updated and inserted to DB");
-                System.out.println(sunsetFormatted);
+                System.out.println(sunset);
 
             } catch (Exception e) {
                 e.printStackTrace();

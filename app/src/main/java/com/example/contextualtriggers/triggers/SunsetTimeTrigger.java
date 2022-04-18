@@ -44,15 +44,15 @@ public class SunsetTimeTrigger implements TriggerInterface {
             return false;
 
         long timeThreshold = 10800; // 3 hours
-        String currentUTC = Instant.now().toString().substring(11, 19);
-        int difference = Math.abs(getSeconds((String)sunsetData.values.get(0)) - getSeconds(currentUTC));
+        String currentTime = new SimpleDateFormat("HH:mm:ss").format(System.currentTimeMillis());
+        int difference = Math.abs(getSeconds((String)sunsetData.values.get(0)) - getSeconds(currentTime));
 
         if(difference < timeThreshold) {
             if(difference < 3600) {
-                int roundedTime = (int)(Math.ceil(difference / 900.0) * 900) / 15;
+                int roundedTime = (int)(Math.ceil(difference / 900.0) * 900) / 900;
                 args.add(roundedTime + " minutes");
             } else {
-                int roundedTime = (int)(Math.ceil(difference / 3600.0) * 3600) / 60;
+                int roundedTime = (int)(Math.ceil(difference / 3600.0) * 3600) / 3600;
                 args.add(roundedTime + " hours");
             }
 
