@@ -1,5 +1,6 @@
 package com.example.contextualtriggers;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -27,6 +28,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         // Start Framework Services
         startService(new Intent(this, ServiceManager.class));
         startService(new Intent(this, ContextAPI.class));
@@ -41,7 +50,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(this, SetupActivity.class));
 
         //Start WorkManager
-        PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(TriggerWorker.class, 15, TimeUnit.MINUTES).setInitialDelay(10, TimeUnit.SECONDS).build();
+        PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(TriggerWorker.class, 15, TimeUnit.MINUTES).setInitialDelay(5, TimeUnit.MINUTES).build();
         WorkManager.getInstance(getApplicationContext()).enqueue(workRequest);
+
+
     }
 }
