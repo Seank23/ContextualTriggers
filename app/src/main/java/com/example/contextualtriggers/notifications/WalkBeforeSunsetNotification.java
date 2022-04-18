@@ -7,9 +7,9 @@ import java.util.ArrayList;
 
 public class WalkBeforeSunsetNotification implements NotificationInterface {
 
-    private ArrayList<String> args;
+    private String[] args;
 
-    public WalkBeforeSunsetNotification(ArrayList<String> args) {
+    public WalkBeforeSunsetNotification(String[] args) {
         this.args = args;
     }
 
@@ -20,11 +20,9 @@ public class WalkBeforeSunsetNotification implements NotificationInterface {
 
     @Override
     public String getText() {
-        return "The sun sets in %s so go out for a walk while you can.".format(args.get(0));
+        return String.format("The sun sets in %s, so why not go out for a walk while you can?", args[0]);
     }
 
     @Override
-    public int getIcon() {
-        return R.drawable.notificationlogo;
-    }
+    public int getIcon() { return R.drawable.notificationlogo; }
 }

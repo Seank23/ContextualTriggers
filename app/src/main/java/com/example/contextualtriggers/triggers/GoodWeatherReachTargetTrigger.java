@@ -6,12 +6,14 @@ import com.example.contextualtriggers.data.SensorData;
 import com.example.contextualtriggers.notifications.GoodWeatherReachTargetNotification;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 public class GoodWeatherReachTargetTrigger implements TriggerInterface {
 
+    private ArrayList<String> args = new ArrayList<>();
     @Override
     public int getId() {
         return 3;
@@ -19,8 +21,7 @@ public class GoodWeatherReachTargetTrigger implements TriggerInterface {
 
     @Override
     public NotificationInterface getNotification() {
-        //return new GoodWeatherReachTargetNotification();
-        return null;
+        return new GoodWeatherReachTargetNotification(getArgs());
     }
 
     @Override
@@ -30,7 +31,7 @@ public class GoodWeatherReachTargetTrigger implements TriggerInterface {
 
     @Override
     public String[] getArgs() {
-        return new String[0];
+        return args.toArray(new String[args.size()]);
     }
 
     @Override
@@ -43,6 +44,7 @@ public class GoodWeatherReachTargetTrigger implements TriggerInterface {
 
         List<String> goodWeather = Arrays.asList("Clear", "Clouds");
         int stepTarget = 10000;
+        args.add(0, Integer.toString(stepTarget));
         long timeThreshold = getSeconds(new SimpleDateFormat("HH:mm:ss").format(System.currentTimeMillis())) * 1000; // Time in today so far
 
         long currentTime = System.currentTimeMillis();

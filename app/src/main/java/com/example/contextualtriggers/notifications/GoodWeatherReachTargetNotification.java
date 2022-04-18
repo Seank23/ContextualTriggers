@@ -1,14 +1,15 @@
 package com.example.contextualtriggers.notifications;
 
+import com.example.contextualtriggers.R;
 import com.example.contextualtriggers.api.NotificationInterface;
 
 import java.util.ArrayList;
 
 public class GoodWeatherReachTargetNotification implements NotificationInterface {
 
-    private ArrayList<String> args;
+    private String[] args;
 
-    public GoodWeatherReachTargetNotification(ArrayList<String> args) {
+    public GoodWeatherReachTargetNotification(String[] args) {
         this.args = args;
     }
 
@@ -19,11 +20,9 @@ public class GoodWeatherReachTargetNotification implements NotificationInterface
 
     @Override
     public String getText() {
-        return "The weather is really good right now. Can you reach your target of %s steps for today?".format(args.get(0));
+        return String.format("The weather is really good right now. Can you reach your target of %s steps for today?", args[0]);
     }
 
     @Override
-    public int getIcon() {
-        return 0;
-    }
+    public int getIcon() { return R.drawable.notificationlogo; }
 }

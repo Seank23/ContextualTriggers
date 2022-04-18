@@ -46,17 +46,20 @@ public class NotificationManager extends Service {
 
         Object[] activeTriggers = triggerNotifications.keySet().toArray();
         Map<Integer, Integer> notificationsSent = ContextAPI.instance.getNotificationsSent();
+        Map<Integer, Integer> activeTriggerFrequencies = new HashMap<>();
 
         // Add new triggers to array with frequency of 0
-        for(int i = 0; i < activeTriggers.length; i++) {
-            if(!notificationsSent.containsKey((int)activeTriggers[i]))
-                notificationsSent.put((int)activeTriggers[i], 0);
+        for (Object activeTrigger : activeTriggers) {
+            if (notificationsSent.containsKey((int) activeTrigger))
+                activeTriggerFrequencies.put((int) activeTrigger, notificationsSent.get((int) activeTrigger));
+            else
+                activeTriggerFrequencies.put((int) activeTrigger, 0);
         }
 
         LinkedHashMap<Integer, Integer> orderedFrequencies = new LinkedHashMap<>();
 
         // Sort notification frequencies ascending
-        notificationsSent.entrySet()
+        activeTriggerFrequencies.entrySet()
                 .stream()
                 .sorted(Map.Entry.comparingByValue())
                 .forEachOrdered(x -> orderedFrequencies.put(x.getKey(), x.getValue()));
@@ -71,7 +74,6 @@ public class NotificationManager extends Service {
             }
             if(System.currentTimeMillis() - Timestamp.valueOf(latestTimestamp).getTime() > NOTIFICATION_TIMEOUT)
                 validTriggers.add(id);
-            
         }
 
         if(validTriggers.isEmpty()) {

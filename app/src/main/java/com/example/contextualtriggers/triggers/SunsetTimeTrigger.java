@@ -23,7 +23,7 @@ public class SunsetTimeTrigger implements TriggerInterface {
 
     @Override
     public NotificationInterface getNotification() {
-        return new WalkBeforeSunsetNotification(args);
+        return new WalkBeforeSunsetNotification(getArgs());
     }
 
     @Override
@@ -33,7 +33,7 @@ public class SunsetTimeTrigger implements TriggerInterface {
 
     @Override
     public String[] getArgs() {
-        return (String[]) args.toArray();
+        return args.toArray(new String[args.size()]);
     }
 
     @Override

@@ -11,6 +11,7 @@ import android.os.Bundle;
 import com.example.contextualtriggers.api.ContextAPI;
 import com.example.contextualtriggers.sensors.StepCounter;
 import com.example.contextualtriggers.sensors.Location;
+import com.example.contextualtriggers.triggers.GoodWeatherReachTargetTrigger;
 import com.example.contextualtriggers.triggers.GoodWeatherTrigger;
 import com.example.contextualtriggers.triggers.StepTrigger;
 import com.example.contextualtriggers.api.TriggerManager;
@@ -40,5 +41,6 @@ public class SetupActivity extends AppCompatActivity {
         triggerManager.addTrigger(new StepTrigger());
         triggerManager.addTrigger(new GoodWeatherTrigger());
         triggerManager.addTrigger(new SunsetTimeTrigger());
+        triggerManager.addTrigger(new GoodWeatherReachTargetTrigger());
     }
 }
