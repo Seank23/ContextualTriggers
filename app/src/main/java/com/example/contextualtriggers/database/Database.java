@@ -54,6 +54,7 @@ public abstract class Database extends RoomDatabase {
             nDao.insert(new notificationEntity("2022-04-09 10:55:02.793",0));
             wDao.insert(new WeatherEntity(System.currentTimeMillis(),"Clouds"));
             wDao.insert(new WeatherEntity(System.currentTimeMillis(), "Clear"));
+            stDao.insert(new SunsetTimeEntity(System.currentTimeMillis(),"19:46:00"));
             return null;
         }
     }
