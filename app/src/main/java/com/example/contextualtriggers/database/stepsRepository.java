@@ -140,7 +140,7 @@ public class stepsRepository {
 
         @Override
         protected Void doInBackground(LocationEntity... locationEntities) {
-            String key = "f7e3d5a17a72e8f77d6e476a702329bf";
+            String key = "4fcbf301b36a550245b6bf7516388a58";
             String exclude = "current,minutely,daily,alerts";
             String str = String.format("https://api.openweathermap.org/data/2.5/onecall?lat=%s&lon=%s&exclude=%s&appid=%s",
                     locationEntities[0].getLatitude(), locationEntities[0].getLongitude(), exclude, key);
