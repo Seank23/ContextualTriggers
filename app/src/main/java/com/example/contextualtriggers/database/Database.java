@@ -10,13 +10,14 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import java.sql.Timestamp;
 
-@androidx.room.Database(entities = {stepsEntity.class, notificationEntity.class, WeatherEntity.class}, version=1)
+@androidx.room.Database(entities = {stepsEntity.class, notificationEntity.class, WeatherEntity.class, SunsetTimeEntity.class}, version=1)
 public abstract class Database extends RoomDatabase {
 
     private static Database instance;
     public abstract stepsDAO sDAO();
     public abstract notificationDAO nDAO();
     public abstract WeatherDAO wDAO();
+    public abstract SunsetTimeDAO stDAO();
 
     public static synchronized Database getInstance(Context context) {
         if (instance == null) {
@@ -39,11 +40,13 @@ public abstract class Database extends RoomDatabase {
         private stepsDAO sDao;
         private notificationDAO nDao;
         private WeatherDAO wDao;
+        private SunsetTimeDAO stDao;
 
         private populateDBAsyncTask(Database db) {
             sDao = db.sDAO();
             nDao = db.nDAO();
             wDao = db.wDAO();
+            stDao = db.stDAO();
         }
         @Override
         protected Void doInBackground(Void... voids) {

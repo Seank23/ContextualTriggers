@@ -13,5 +13,7 @@ public interface TriggerInterface {
 
     String getSensorsRequired();
 
+    String[] getArgs();
+
     boolean checkTrigger(HashMap<Integer, SensorData> data);
 }

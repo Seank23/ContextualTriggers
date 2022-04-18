@@ -12,7 +12,7 @@ import java.util.HashMap;
 public class ServiceManager extends Service {
 
     public static ServiceManager instance;
-    public static boolean isInvoked = false;
+    public boolean isInvoked = false;
 
     @Override
     public void onCreate() {

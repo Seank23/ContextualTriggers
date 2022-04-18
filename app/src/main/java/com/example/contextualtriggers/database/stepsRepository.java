@@ -20,24 +20,28 @@ public class stepsRepository {
     private stepsDAO sDao;
     private notificationDAO nDao;
     private WeatherDAO wDao;
+    private SunsetTimeDAO stDao;
 
     private stepsEntity latestStepCount;
     private List<stepsEntity> stepsTable;
     private notificationEntity latestNotification;
     private int[] notificationIds;
     private WeatherEntity latestWeather;
+    private SunsetTimeEntity latestSunsetTime;
 
     public stepsRepository(Application app) {
         Database db = Database.getInstance(app);
         sDao = db.sDAO();
         nDao = db.nDAO();
         wDao = db.wDAO();
+        stDao = db.stDAO();
 
         latestStepCount = sDao.getLastStepCount();
         stepsTable = sDao.getStepsTable();
         latestNotification = nDao.getLatestNotification();
         notificationIds = nDao.getAllNotification();
         latestWeather = wDao.getLatestWeather();
+        latestSunsetTime = stDao.getLatestSunsetTime();
     }
 
     public void insert(stepsEntity steps) {
@@ -46,7 +50,10 @@ public class stepsRepository {
 
     public void insert(notificationEntity notification) {new InsertNotificationASyncTask(nDao).execute(notification);}
 
-    public void insert(LocationEntity location) { new InsertWeatherASyncTask(wDao).execute(location);}
+    public void insert(LocationEntity location) {
+        new InsertWeatherASyncTask(wDao).execute(location);
+        new InsertSunsetTimeASyncTask(stDao).execute(location);
+    }
 
     public stepsEntity getLatestStepCount() {
         //System.out.println("LATEST STEPS COUNT: "+latestStepCount.getStepCount());
@@ -66,6 +73,8 @@ public class stepsRepository {
     public int[] getNotificationIds() { return notificationIds; }
 
     public WeatherEntity getLatestWeather() { return latestWeather; }
+
+    public SunsetTimeEntity getLatestSunsetTime() { return latestSunsetTime; }
 
     public String getLatestNotificationTimeByID(int id) { return nDao.getLatestNotificationTimeByID(id);}
 
@@ -137,6 +146,37 @@ public class stepsRepository {
                 wDao.insert(weatherEntity);
                 System.out.println("Weather updated and inserted to DB");
                 System.out.println(weather);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+    private static class InsertSunsetTimeASyncTask extends AsyncTask<LocationEntity,Void,Void> {
+        private SunsetTimeDAO stDao;
+        private InsertSunsetTimeASyncTask(SunsetTimeDAO stDao) {this.stDao = stDao;}
+
+        @Override
+        protected Void doInBackground(LocationEntity... locationEntities) {
+
+            String str = String.format("https://api.sunrise-sunset.org/json?lat=%s&lng=%s&date=today",
+                    locationEntities[0].getLatitude(), locationEntities[0].getLongitude());
+            String response, sunset = null;
+            try {
+                URI myUri = new URI(str);
+                response = getResponseFromHttpUrl(myUri.toURL());
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    sunset = (String)jsonObject.getJSONObject("results").get("sunset");
+                }catch (JSONException err){
+                    Log.d("Error", err.toString());
+                }
+                SunsetTimeEntity sunsetTimeEntity = new SunsetTimeEntity(System.currentTimeMillis(), sunset);
+                stDao.insert(sunsetTimeEntity);
+                System.out.println("Sunset time updated and inserted to DB");
+                System.out.println(sunset);
 
             } catch (Exception e) {
                 e.printStackTrace();

@@ -27,6 +27,11 @@ public class GoodWeatherTrigger implements TriggerInterface {
     }
 
     @Override
+    public String[] getArgs() {
+        return new String[0];
+    }
+
+    @Override
     public boolean checkTrigger(HashMap<Integer, SensorData> data) {
 
         List<String> goodWeather = Arrays.asList("Clear", "Clouds");

@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 
 import com.example.contextualtriggers.data.SensorData;
 import com.example.contextualtriggers.database.LocationEntity;
+import com.example.contextualtriggers.database.SunsetTimeEntity;
 import com.example.contextualtriggers.database.WeatherEntity;
 import com.example.contextualtriggers.database.notificationEntity;
 import com.example.contextualtriggers.database.stepsEntity;
@@ -103,6 +104,7 @@ public class ContextAPI extends Service implements ChangeListener {
 
         List<stepsEntity> steps = sr.getStepsTable();
         WeatherEntity weather = sr.getLatestWeather();
+        SunsetTimeEntity sunset = sr.getLatestSunsetTime();
         HashMap<Integer, SensorData> allData = new HashMap<>();
 
         // Steps data
@@ -117,8 +119,14 @@ public class ContextAPI extends Service implements ChangeListener {
         weatherSensorData.values.add(weather.getWeather());
         weatherSensorData.timestamps.add(weather.getTimestamp());
 
+        // Sunset data
+        SensorData sunsetSensorData = new SensorData(1, new ArrayList<>(), new ArrayList<>());
+        weatherSensorData.values.add(sunset.getTime());
+        weatherSensorData.timestamps.add(sunset.getTimestamp());
+
         allData.put(0, stepSensorData);
         allData.put(1, weatherSensorData);
+        allData.put(2, sunsetSensorData);
         return allData;
     }
 
