@@ -97,14 +97,18 @@ public class ContextAPI extends Service implements ChangeListener {
 
         // Steps data
         SensorData stepSensorData = new SensorData(0, new ArrayList<>(), new ArrayList<>());
-        for(StepsEntity step : steps) {
-            stepSensorData.values.add(step.getStepCount());
-            stepSensorData.timestamps.add(step.getTimestamp());
+        if(steps != null) {
+            sr.setDataBinded(0);
+            for (StepsEntity step : steps) {
+                stepSensorData.values.add(step.getStepCount());
+                stepSensorData.timestamps.add(step.getTimestamp());
+            }
         }
 
         // Weather data
         SensorData weatherSensorData = new SensorData(1, new ArrayList<>(), new ArrayList<>());
         if(weather != null) {
+            sr.setDataBinded(1);
             weatherSensorData.values.add(weather.getWeather());
             weatherSensorData.timestamps.add(weather.getTimestamp());
         }
@@ -112,6 +116,7 @@ public class ContextAPI extends Service implements ChangeListener {
         // Sunset data
         SensorData sunsetSensorData = new SensorData(1, new ArrayList<>(), new ArrayList<>());
         if(sunset != null) {
+            sr.setDataBinded(2);
             sunsetSensorData.values.add(sunset.getTime());
             sunsetSensorData.timestamps.add(sunset.getTimestamp());
         }

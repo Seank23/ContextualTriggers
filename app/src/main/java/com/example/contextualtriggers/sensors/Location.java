@@ -49,7 +49,7 @@ public class Location extends Service implements SensorInterface {
         listener = new LocationListener();
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,300000,0,listener);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,5000,0,listener);
         }
 
         return super.onStartCommand(intent, flags, startId);

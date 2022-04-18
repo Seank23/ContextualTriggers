@@ -50,12 +50,18 @@ public class GoodWeatherReachTargetTrigger implements TriggerInterface {
         long timeThreshold = getSeconds(new SimpleDateFormat("HH:mm:ss").format(System.currentTimeMillis())) * 1000; // Time in today so far
 
         long currentTime = System.currentTimeMillis();
-        int totalSteps = 0;
-        int i = stepsData.timestamps.size() - 1;
-        while(i >= 0 && stepsData.timestamps.get(i) > currentTime - timeThreshold) {
-            totalSteps += (int)stepsData.values.get(i);
-            i--;
+        long targetTime = currentTime - timeThreshold;
+        long closest = Math.abs(stepsData.timestamps.get(0) - targetTime);
+        int closestIndex = 0;
+        for(int i = 1; i < stepsData.timestamps.size(); i++){
+            long distance = Math.abs(stepsData.timestamps.get(i) - targetTime);
+            if(distance < closest){
+                closestIndex = i;
+                closest = distance;
+            }
         }
+        // Get steps difference between most recent recording and closest recording to time threshold
+        int totalSteps = (int)stepsData.values.get(0) - (int)stepsData.values.get(closestIndex);
 
         if(goodWeather.contains((String) weatherData.values.get(0)) && totalSteps < stepTarget)
             return true;

@@ -9,7 +9,6 @@ import java.util.HashMap;
 
 public class StepTrigger implements TriggerInterface {
 
-
     @Override
     public int getId() {
         return 0;
@@ -39,20 +38,23 @@ public class StepTrigger implements TriggerInterface {
 
         long timeThreshold = 3600000; // 1 hour
         long currentTime = System.currentTimeMillis();
-        int totalSteps = 0;
-        int i = stepsData.timestamps.size() - 1;
-        while(i >= 0 && stepsData.timestamps.get(i) > currentTime - timeThreshold) {
-            totalSteps += (int)stepsData.values.get(i);
-            i--;
-        }
 
-        if(totalSteps < 100) {
-            System.out.println("Trigger activated: " + totalSteps + " steps");
+        long targetTime = currentTime - timeThreshold;
+        long closest = Math.abs(stepsData.timestamps.get(0) - targetTime);
+        int closestIndex = 0;
+        for(int i = 1; i < stepsData.timestamps.size(); i++){
+            long distance = Math.abs(stepsData.timestamps.get(i) - targetTime);
+            if(distance < closest){
+                closestIndex = i;
+                closest = distance;
+            }
+        }
+        // Get steps difference between most recent recording and closest recording to time threshold
+        int totalSteps = (int)stepsData.values.get(0) - (int)stepsData.values.get(closestIndex);
+
+        if(totalSteps < 100)
             return true;
-        }
-        else {
-            System.out.println("Trigger inactive: " + totalSteps + " steps");
-            return false;
-        }
+
+        return false;
     }
 }

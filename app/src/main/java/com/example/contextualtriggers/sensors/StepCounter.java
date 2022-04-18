@@ -57,6 +57,7 @@ public class StepCounter extends Service implements SensorInterface, SensorEvent
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
 
+        System.out.println(sensorEvent.values[0]);
         if (sensorEvent.values[0]==0.0) {
             return;
         }

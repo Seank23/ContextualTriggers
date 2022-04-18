@@ -85,6 +85,8 @@ public class Repository {
 
     public HashSet<Integer> getDataBindings() { return dataBinded; }
 
+    public void setDataBinded(int type) { dataBinded.add(type); }
+
     private static class InsertStepsASyncTask extends AsyncTask<StepsEntity, Void, Void> {
 
         private StepsDAO sDao;
