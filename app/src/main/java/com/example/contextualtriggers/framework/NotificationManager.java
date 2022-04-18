@@ -1,4 +1,4 @@
-package com.example.contextualtriggers.api;
+package com.example.contextualtriggers.framework;
 
 import android.app.NotificationChannel;
 import android.app.Service;
@@ -11,12 +11,8 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;

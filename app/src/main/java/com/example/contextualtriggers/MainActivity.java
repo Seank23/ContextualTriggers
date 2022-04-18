@@ -10,15 +10,14 @@ import androidx.work.WorkManager;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Bundle;
 
 import com.example.contextualtriggers.Workers.TriggerWorker;
-import com.example.contextualtriggers.api.ContextAPI;
-import com.example.contextualtriggers.api.ServiceManager;
+import com.example.contextualtriggers.framework.ContextAPI;
+import com.example.contextualtriggers.framework.ServiceManager;
 import com.example.contextualtriggers.sensors.StepCounter;
 import com.example.contextualtriggers.sensors.Location;
-import com.example.contextualtriggers.api.NotificationManager;
-import com.example.contextualtriggers.api.TriggerManager;
+import com.example.contextualtriggers.framework.NotificationManager;
+import com.example.contextualtriggers.framework.TriggerManager;
 
 import java.util.concurrent.TimeUnit;
 

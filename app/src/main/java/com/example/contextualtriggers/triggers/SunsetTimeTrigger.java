@@ -1,16 +1,12 @@
 package com.example.contextualtriggers.triggers;
 
-import com.example.contextualtriggers.api.NotificationInterface;
-import com.example.contextualtriggers.api.TriggerInterface;
+import com.example.contextualtriggers.framework.NotificationInterface;
+import com.example.contextualtriggers.framework.TriggerInterface;
 import com.example.contextualtriggers.data.SensorData;
 import com.example.contextualtriggers.notifications.WalkBeforeSunsetNotification;
 
-import java.sql.Timestamp;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 
 public class SunsetTimeTrigger implements TriggerInterface {
@@ -49,7 +45,8 @@ public class SunsetTimeTrigger implements TriggerInterface {
         String currentTime = new SimpleDateFormat("HH:mm:ss").format(System.currentTimeMillis());
         int difference = getSeconds((String)sunsetData.values.get(0)) - getSeconds(currentTime);
 
-        if(difference > 0 && difference < timeThreshold) {
+        if(difference > 0 && difference < timeThreshold &&
+                getSeconds(currentTime) > 61200) { // After 17:00
             if(difference < 3600) {
                 int roundedTime = (int)(Math.ceil(difference / 900.0) * 900) / 60;
                 args.add(0, roundedTime + " minutes");

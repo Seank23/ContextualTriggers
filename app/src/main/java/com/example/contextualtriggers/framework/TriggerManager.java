@@ -1,4 +1,4 @@
-package com.example.contextualtriggers.api;
+package com.example.contextualtriggers.framework;
 
 import android.app.Service;
 import android.content.Intent;
@@ -8,7 +8,6 @@ import androidx.annotation.Nullable;
 
 import com.example.contextualtriggers.data.SensorData;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 

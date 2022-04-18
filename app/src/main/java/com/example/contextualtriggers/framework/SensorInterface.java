@@ -1,4 +1,4 @@
-package com.example.contextualtriggers.api;
+package com.example.contextualtriggers.framework;
 
 public interface SensorInterface {
 
@@ -7,12 +7,6 @@ public interface SensorInterface {
     Object getSensorValue();
 
     long getTimestamp();
-
-    void setSensorType(int sensorType);
-
-    void setSensorValue(Object sensorValue);
-
-    void setTimestamp(long timestamp);
 
     void setChangeListener(ChangeListener listener);
 }

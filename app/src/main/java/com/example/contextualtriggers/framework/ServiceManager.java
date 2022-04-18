@@ -1,4 +1,4 @@
-package com.example.contextualtriggers.api;
+package com.example.contextualtriggers.framework;
 
 import android.app.Service;
 import android.content.Intent;

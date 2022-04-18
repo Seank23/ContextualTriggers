@@ -10,12 +10,12 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import java.sql.Timestamp;
 
-@androidx.room.Database(entities = {stepsEntity.class, notificationEntity.class, WeatherEntity.class, SunsetTimeEntity.class}, version=1)
+@androidx.room.Database(entities = {StepsEntity.class, NotificationEntity.class, WeatherEntity.class, SunsetTimeEntity.class}, version=1)
 public abstract class Database extends RoomDatabase {
 
     private static Database instance;
-    public abstract stepsDAO sDAO();
-    public abstract notificationDAO nDAO();
+    public abstract StepsDAO sDAO();
+    public abstract NotificationDAO nDAO();
     public abstract WeatherDAO wDAO();
     public abstract SunsetTimeDAO stDAO();
 
@@ -37,8 +37,8 @@ public abstract class Database extends RoomDatabase {
     };
 
     private static class populateDBAsyncTask extends AsyncTask<Void,Void,Void> {
-        private stepsDAO sDao;
-        private notificationDAO nDao;
+        private StepsDAO sDao;
+        private NotificationDAO nDao;
         private WeatherDAO wDao;
         private SunsetTimeDAO stDao;
 
@@ -50,8 +50,8 @@ public abstract class Database extends RoomDatabase {
         }
         @Override
         protected Void doInBackground(Void... voids) {
-            sDao.insert(new stepsEntity(0,new Timestamp(System.currentTimeMillis()).getTime()));
-            nDao.insert(new notificationEntity("2022-04-09 10:55:02.793",0));
+            sDao.insert(new StepsEntity(0,new Timestamp(System.currentTimeMillis()).getTime()));
+            nDao.insert(new NotificationEntity("2022-04-09 10:55:02.793",0));
             wDao.insert(new WeatherEntity(System.currentTimeMillis(),"Clouds"));
             wDao.insert(new WeatherEntity(System.currentTimeMillis(), "Clear"));
             stDao.insert(new SunsetTimeEntity(System.currentTimeMillis(),"19:46:00"));
