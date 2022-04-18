@@ -38,9 +38,9 @@ public class SetupActivity extends AppCompatActivity {
 
         // Add triggers to TriggerManager
         TriggerManager triggerManager = TriggerManager.instance;
-        triggerManager.addTrigger(new StepTrigger());
-        triggerManager.addTrigger(new GoodWeatherTrigger());
+        //triggerManager.addTrigger(new StepTrigger());
+        //triggerManager.addTrigger(new GoodWeatherTrigger());
         triggerManager.addTrigger(new SunsetTimeTrigger());
-        triggerManager.addTrigger(new GoodWeatherReachTargetTrigger());
+        //triggerManager.addTrigger(new GoodWeatherReachTargetTrigger());
     }
 }

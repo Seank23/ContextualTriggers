@@ -15,7 +15,7 @@ import java.util.HashSet;
 public class TriggerManager extends Service {
 
     public static TriggerManager instance;
-    private ArrayList<TriggerInterface> triggers;
+    private HashMap<Integer, TriggerInterface> triggers;
 
     @Nullable
     @Override
@@ -27,11 +27,11 @@ public class TriggerManager extends Service {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        triggers = new ArrayList<>();
+        triggers = new HashMap<>();
     }
 
     public void addTrigger(TriggerInterface trigger) {
-        triggers.add(trigger);
+        triggers.put(trigger.getId(), trigger);
     }
 
     public void removeTrigger(TriggerInterface trigger) {
@@ -42,7 +42,7 @@ public class TriggerManager extends Service {
 
         HashMap<Integer, Boolean> triggerOutput = new HashMap<>();
 
-        for(TriggerInterface trigger : triggers) {
+        for(TriggerInterface trigger : triggers.values()) {
 
             HashMap<Integer, SensorData> triggerData = getTriggerData(trigger.getSensorsRequired(), dataHashMap);
             boolean output = trigger.checkTrigger(triggerData);

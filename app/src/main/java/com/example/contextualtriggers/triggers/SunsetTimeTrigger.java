@@ -49,7 +49,7 @@ public class SunsetTimeTrigger implements TriggerInterface {
 
         if(difference > 0 && difference < timeThreshold) {
             if(difference < 3600) {
-                int roundedTime = (int)(Math.ceil(difference / 900.0) * 900) / 900;
+                int roundedTime = (int)(Math.ceil(difference / 900.0) * 900) / 60;
                 args.add(0, roundedTime + " minutes");
             } else {
                 int roundedTime = (int)(Math.ceil(difference / 3600.0) * 3600) / 3600;
