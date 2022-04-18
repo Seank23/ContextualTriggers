@@ -60,23 +60,6 @@ public class ContextAPI extends Service implements ChangeListener {
         return sr.getDataBindings();
     }
 
-//    public Long getLatestTimestamp() {
-//        stepsRepository repository = new stepsRepository(getApplication());
-//        stepsEntity entity = repository.getLatestStepCount();
-//        return entity.getTimestamp();
-//    }
-//
-//    public double getLatestStepCount() {
-//        stepsRepository repository = new stepsRepository(getApplication());
-//        stepsEntity entity = repository.getLatestStepCount();
-//        return entity.getStepCount();
-//    }
-//
-//    public List<stepsEntity> getStepsTable() {
-//        stepsRepository rep = new stepsRepository(getApplication());
-//        return rep.getStepsTable();
-//    }
-
     public void recordNotification(int id) {
         notificationEntity notification = new notificationEntity(String.valueOf(new Timestamp(System.currentTimeMillis())), id);
         sr.insert(notification);
@@ -128,6 +111,18 @@ public class ContextAPI extends Service implements ChangeListener {
         SensorData sunsetSensorData = new SensorData(1, new ArrayList<>(), new ArrayList<>());
         sunsetSensorData.values.add(sunset.getTime());
         sunsetSensorData.timestamps.add(sunset.getTimestamp());
+
+//        System.out.println("------");
+//        System.out.println("Steps:");
+//        for(Object val : stepSensorData.values)
+//            System.out.print(val + " ");
+//        System.out.println("\nWeather:");
+//        for(Object val : weatherSensorData.values)
+//            System.out.print(val + " ");
+//        System.out.println("\nSunset:");
+//        for(Object val : sunsetSensorData.values)
+//            System.out.print(val + " ");
+//        System.out.println("\n------");
 
         allData.put(0, stepSensorData);
         allData.put(1, weatherSensorData);
