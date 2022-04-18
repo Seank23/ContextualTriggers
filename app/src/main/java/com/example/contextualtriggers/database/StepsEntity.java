@@ -4,7 +4,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "steps_table")
-public class stepsEntity {
+public class StepsEntity {
 
     @PrimaryKey(autoGenerate = true)
     int ID;
@@ -13,7 +13,7 @@ public class stepsEntity {
 
     long timestamp;
 
-    public stepsEntity(int stepCount, long timestamp) {
+    public StepsEntity(int stepCount, long timestamp) {
         this.stepCount = stepCount;
         this.timestamp = timestamp;
     }

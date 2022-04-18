@@ -4,7 +4,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "notification_table")
-public class notificationEntity {
+public class NotificationEntity {
 
     @PrimaryKey(autoGenerate = true)
     int ID;
@@ -13,7 +13,7 @@ public class notificationEntity {
 
     int notificationID;
 
-    public notificationEntity(String notificationTimestamp, int notificationID) {
+    public NotificationEntity(String notificationTimestamp, int notificationID) {
         this.notificationID = notificationID;
         this.notificationTimestamp = notificationTimestamp;
     }

@@ -26,19 +26,19 @@
         </activity>
 
         <service
-            android:name=".api.ContextAPI"
+            android:name=".framework.ContextAPI"
             android:exported="false" />
         <service
             android:name=".sensors.StepCounter"
             android:exported="false" />
         <service
-            android:name=".api.ServiceManager"
+            android:name=".framework.ServiceManager"
             android:exported="false" />
         <service
-            android:name=".api.TriggerManager"
+            android:name=".framework.TriggerManager"
             android:exported="false" />
         <service
-            android:name=".api.NotificationManager"
+            android:name=".framework.NotificationManager"
             android:exported="false"/>
         <service
             android:name=".sensors.Location"

@@ -1,4 +1,4 @@
-package com.example.contextualtriggers.api;
+package com.example.contextualtriggers.framework;
 
 import android.app.Service;
 import android.content.Intent;
@@ -8,11 +8,11 @@ import androidx.annotation.Nullable;
 
 import com.example.contextualtriggers.data.SensorData;
 import com.example.contextualtriggers.database.LocationEntity;
+import com.example.contextualtriggers.database.NotificationEntity;
 import com.example.contextualtriggers.database.SunsetTimeEntity;
 import com.example.contextualtriggers.database.WeatherEntity;
-import com.example.contextualtriggers.database.notificationEntity;
-import com.example.contextualtriggers.database.stepsEntity;
-import com.example.contextualtriggers.database.stepsRepository;
+import com.example.contextualtriggers.database.StepsEntity;
+import com.example.contextualtriggers.database.Repository;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ import java.util.List;
 public class ContextAPI extends Service implements ChangeListener {
 
     public static ContextAPI instance;
-    private stepsRepository sr;
+    private Repository sr;
     private ArrayList<SensorInterface> sensors;
 
     @Override
@@ -31,7 +31,7 @@ public class ContextAPI extends Service implements ChangeListener {
         super.onCreate();
         instance = this;
         sensors = new ArrayList<>();
-        sr = new stepsRepository(getApplication());
+        sr = new Repository(getApplication());
     }
 
     @Nullable
@@ -61,7 +61,7 @@ public class ContextAPI extends Service implements ChangeListener {
     }
 
     public void recordNotification(int id) {
-        notificationEntity notification = new notificationEntity(String.valueOf(new Timestamp(System.currentTimeMillis())), id);
+        NotificationEntity notification = new NotificationEntity(String.valueOf(new Timestamp(System.currentTimeMillis())), id);
         sr.insert(notification);
     }
 
@@ -80,7 +80,7 @@ public class ContextAPI extends Service implements ChangeListener {
         return notificationsSent;
     }
 
-    public notificationEntity getLatestNotification() {
+    public NotificationEntity getLatestNotification() {
         return sr.getLatestNotification();
     }
 
@@ -90,14 +90,14 @@ public class ContextAPI extends Service implements ChangeListener {
 
     public HashMap<Integer, SensorData> getData() {
 
-        List<stepsEntity> steps = sr.getStepsTable();
+        List<StepsEntity> steps = sr.getStepsTable();
         WeatherEntity weather = sr.getLatestWeather();
         SunsetTimeEntity sunset = sr.getLatestSunsetTime();
         HashMap<Integer, SensorData> allData = new HashMap<>();
 
         // Steps data
         SensorData stepSensorData = new SensorData(0, new ArrayList<>(), new ArrayList<>());
-        for(stepsEntity step : steps) {
+        for(StepsEntity step : steps) {
             stepSensorData.values.add(step.getStepCount());
             stepSensorData.timestamps.add(step.getTimestamp());
         }
@@ -116,17 +116,17 @@ public class ContextAPI extends Service implements ChangeListener {
             sunsetSensorData.timestamps.add(sunset.getTimestamp());
         }
 
-//        System.out.println("------");
-//        System.out.println("Steps:");
-//        for(Object val : stepSensorData.values)
-//            System.out.print(val + " ");
-//        System.out.println("\nWeather:");
-//        for(Object val : weatherSensorData.values)
-//            System.out.print(val + " ");
-//        System.out.println("\nSunset:");
-//        for(Object val : sunsetSensorData.values)
-//            System.out.print(val + " ");
-//        System.out.println("\n------");
+        System.out.println("------");
+        System.out.println("Steps:");
+        for(Object val : stepSensorData.values)
+            System.out.print(val + " ");
+        System.out.println("\nWeather:");
+        for(Object val : weatherSensorData.values)
+            System.out.print(val + " ");
+        System.out.println("\nSunset:");
+        for(Object val : sunsetSensorData.values)
+            System.out.print(val + " ");
+        System.out.println("\n------");
 
         allData.put(0, stepSensorData);
         allData.put(1, weatherSensorData);
@@ -142,7 +142,7 @@ public class ContextAPI extends Service implements ChangeListener {
 
         switch (type) {
             case 0:
-                sr.insert(new stepsEntity((int)value, timestamp));
+                sr.insert(new StepsEntity((int)value, timestamp));
                 break;
             case 1:
                 double[] location = (double[])value;

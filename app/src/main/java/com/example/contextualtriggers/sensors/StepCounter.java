@@ -11,16 +11,16 @@ import android.os.IBinder;
 
 import androidx.annotation.Nullable;
 
-import com.example.contextualtriggers.api.ChangeListener;
-import com.example.contextualtriggers.api.SensorInterface;
+import com.example.contextualtriggers.framework.ChangeListener;
+import com.example.contextualtriggers.framework.SensorInterface;
 
 public class StepCounter extends Service implements SensorInterface, SensorEventListener {
 
     public static StepCounter instance;
     SensorManager mSensorManager;
     Sensor stepCounter;
-    long timestamp = 0;
 
+    long timestamp = 0;
     int steps = 0;
 
     private ChangeListener listener;
@@ -36,9 +36,6 @@ public class StepCounter extends Service implements SensorInterface, SensorEvent
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         stepCounter = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
-
-        System.out.println("Hello");
-
         mSensorManager.registerListener(this, stepCounter, SensorManager.SENSOR_DELAY_NORMAL);
 
         return super.onStartCommand(intent, flags, startId);
@@ -63,7 +60,6 @@ public class StepCounter extends Service implements SensorInterface, SensorEvent
         if (sensorEvent.values[0]==0.0) {
             return;
         }
-        //System.out.println("Sensor changed.");
         steps = (int)sensorEvent.values[0];
         timestamp = System.currentTimeMillis();
         if (listener != null) {
@@ -72,9 +68,7 @@ public class StepCounter extends Service implements SensorInterface, SensorEvent
     }
 
     @Override
-    public void onAccuracyChanged(Sensor sensor, int i) {
-
-    }
+    public void onAccuracyChanged(Sensor sensor, int i) { }
 
     @Override
     public int getSensorType() {
@@ -89,21 +83,6 @@ public class StepCounter extends Service implements SensorInterface, SensorEvent
     @Override
     public long getTimestamp() {
         return timestamp;
-    }
-
-    @Override
-    public void setSensorType(int sensorType) {
-
-    }
-
-    @Override
-    public void setSensorValue(Object sensorValue) {
-
-    }
-
-    @Override
-    public void setTimestamp(long timestamp) {
-
     }
 
     @Override

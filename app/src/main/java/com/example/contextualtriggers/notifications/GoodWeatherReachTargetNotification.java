@@ -1,9 +1,7 @@
 package com.example.contextualtriggers.notifications;
 
 import com.example.contextualtriggers.R;
-import com.example.contextualtriggers.api.NotificationInterface;
-
-import java.util.ArrayList;
+import com.example.contextualtriggers.framework.NotificationInterface;
 
 public class GoodWeatherReachTargetNotification implements NotificationInterface {
 

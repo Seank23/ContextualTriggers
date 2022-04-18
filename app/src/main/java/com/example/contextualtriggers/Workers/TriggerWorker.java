@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import com.example.contextualtriggers.api.ServiceManager;
+import com.example.contextualtriggers.framework.ServiceManager;
 
 public class TriggerWorker extends Worker {
     public TriggerWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {

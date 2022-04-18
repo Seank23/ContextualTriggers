@@ -1,20 +1,16 @@
 package com.example.contextualtriggers;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 
-import com.example.contextualtriggers.api.ContextAPI;
+import com.example.contextualtriggers.framework.ContextAPI;
 import com.example.contextualtriggers.sensors.StepCounter;
 import com.example.contextualtriggers.sensors.Location;
 import com.example.contextualtriggers.triggers.GoodWeatherReachTargetTrigger;
 import com.example.contextualtriggers.triggers.GoodWeatherTrigger;
 import com.example.contextualtriggers.triggers.StepTrigger;
-import com.example.contextualtriggers.api.TriggerManager;
+import com.example.contextualtriggers.framework.TriggerManager;
 import com.example.contextualtriggers.triggers.SunsetTimeTrigger;
 
 public class SetupActivity extends AppCompatActivity {

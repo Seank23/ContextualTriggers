@@ -4,7 +4,6 @@ import android.app.Application;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -13,28 +12,26 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
 
-public class stepsRepository {
-    private stepsDAO sDao;
-    private notificationDAO nDao;
+public class Repository {
+    private StepsDAO sDao;
+    private NotificationDAO nDao;
     private WeatherDAO wDao;
     private SunsetTimeDAO stDao;
 
-    private stepsEntity latestStepCount;
-    private List<stepsEntity> stepsTable;
-    private notificationEntity latestNotification;
+    private StepsEntity latestStepCount;
+    private List<StepsEntity> stepsTable;
+    private NotificationEntity latestNotification;
     private int[] notificationIds;
     private WeatherEntity latestWeather;
     private SunsetTimeEntity latestSunsetTime;
 
     private HashSet<Integer> dataBinded;
 
-    public stepsRepository(Application app) {
+    public Repository(Application app) {
         Database db = Database.getInstance(app);
         sDao = db.sDAO();
         nDao = db.nDAO();
@@ -50,12 +47,12 @@ public class stepsRepository {
         dataBinded = new HashSet<>();
     }
 
-    public void insert(stepsEntity steps) {
+    public void insert(StepsEntity steps) {
         dataBinded.add(0);
         new InsertStepsASyncTask(sDao).execute(steps);
     }
 
-    public void insert(notificationEntity notification) {
+    public void insert(NotificationEntity notification) {
         new InsertNotificationASyncTask(nDao).execute(notification);
     }
 
@@ -66,18 +63,15 @@ public class stepsRepository {
         new InsertSunsetTimeASyncTask(stDao).execute(location);
     }
 
-    public stepsEntity getLatestStepCount() {
-        //System.out.println("LATEST STEPS COUNT: "+latestStepCount.getStepCount());
-        //System.out.println("LATEST STEPS COUNT: "+latestStepCount.getTimestamp());
-        //System.out.println("LIST SIZE: "+latestStepCount.size());
+    public StepsEntity getLatestStepCount() {
         return latestStepCount;
     }
 
-    public List<stepsEntity> getStepsTable() {
+    public List<StepsEntity> getStepsTable() {
         return stepsTable;
     }
 
-    public notificationEntity getLatestNotification() {
+    public NotificationEntity getLatestNotification() {
         return latestNotification;
     }
 
@@ -91,16 +85,16 @@ public class stepsRepository {
 
     public HashSet<Integer> getDataBindings() { return dataBinded; }
 
-    private static class InsertStepsASyncTask extends AsyncTask<stepsEntity, Void, Void> {
+    private static class InsertStepsASyncTask extends AsyncTask<StepsEntity, Void, Void> {
 
-        private stepsDAO sDao;
+        private StepsDAO sDao;
 
-        private InsertStepsASyncTask(stepsDAO sDao) {
+        private InsertStepsASyncTask(StepsDAO sDao) {
             this.sDao = sDao;
         }
 
         @Override
-        protected Void doInBackground(stepsEntity... stepsEntities) {
+        protected Void doInBackground(StepsEntity... stepsEntities) {
             sDao.insert(stepsEntities[0]);
 
             //System.out.println("Value added: "+stepsEntities[0].getStepCount());
@@ -109,30 +103,18 @@ public class stepsRepository {
         }
     }
 
-    private static class InsertNotificationASyncTask extends AsyncTask<notificationEntity, Void, Void> {
+    private static class InsertNotificationASyncTask extends AsyncTask<NotificationEntity, Void, Void> {
 
-        private notificationDAO nDao;
-        private InsertNotificationASyncTask(notificationDAO nDao) {this.nDao = nDao;}
+        private NotificationDAO nDao;
+        private InsertNotificationASyncTask(NotificationDAO nDao) {this.nDao = nDao;}
 
         @Override
-        protected Void doInBackground(notificationEntity... notificationEntities) {
+        protected Void doInBackground(NotificationEntity... notificationEntities) {
             nDao.insert(notificationEntities[0]);
             System.out.println("Notification added to DB");
             return null;
         }
     }
-
-//    private static class InsertLocationASyncTask extends AsyncTask<LocationEntity,Void,Void> {
-//        private WeatherDAO wDao;
-//        private InsertLocationASyncTask(WeatherDAO lDao) {this.wDao = lDao;}
-//
-//        @Override
-//        protected Void doInBackground(LocationEntity... locationEntities) {
-//            wDao.insert(locationEntities[0]);
-//            System.out.println("Location updated and inserted to DB");
-//            return null;
-//        }
-//    }
 
     private static class InsertWeatherASyncTask extends AsyncTask<LocationEntity,Void,Void> {
         private WeatherDAO wDao;
