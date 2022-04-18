@@ -11,7 +11,12 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -30,6 +35,14 @@ public class NotificationManager extends Service {
     }
 
     public void sendNotification(HashMap<Integer, NotificationInterface> triggerNotifications) {
+
+        if (checkTime()) {
+            System.out.println("WITHIN TIME");
+        }
+        else {
+            return;
+        }
+        
 
         Object[] activeTriggers = triggerNotifications.keySet().toArray();
         Map<Integer, Integer> notificationsSent = ContextAPI.instance.getNotificationsSent();
@@ -58,6 +71,7 @@ public class NotificationManager extends Service {
             }
             if(System.currentTimeMillis() - Timestamp.valueOf(latestTimestamp).getTime() > NOTIFICATION_TIMEOUT)
                 validTriggers.add(id);
+            
         }
 
         if(validTriggers.isEmpty()) {
@@ -104,5 +118,16 @@ public class NotificationManager extends Service {
         c = getApplicationContext();
         System.out.println("");
         return super.onStartCommand(intent, flags, startId);
+    }
+
+    public boolean checkTime() {
+       LocalTime target = LocalTime.now();
+
+       if (target.isAfter(LocalTime.parse("07:00:00"))&&target.isBefore(LocalTime.parse("22:00:00"))) {
+           return true;
+       } else {
+           return false;
+       }
+
     }
 }

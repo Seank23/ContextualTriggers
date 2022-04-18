@@ -7,12 +7,12 @@ public class MyNotification implements NotificationInterface {
 
     @Override
     public String getTitle() {
-        return "Do more steps you fat bitch!";
+        return "Time to Walk!";
     }
 
     @Override
     public String getText() {
-        return "You haven't walked in over an hour! You fat.";
+        return "You haven't walked in over an hour! Why not go for a quick walk round the block?";
     }
 
     @Override
