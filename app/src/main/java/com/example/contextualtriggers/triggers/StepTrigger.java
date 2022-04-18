@@ -32,6 +32,8 @@ public class StepTrigger implements TriggerInterface {
     public boolean checkTrigger(HashMap<Integer, SensorData> data) {
 
         SensorData stepsData = data.get(0);
+        if(stepsData == null)
+            return false;
 
         long timeThreshold = 3600000; // 1 hour
         long currentTime = System.currentTimeMillis();

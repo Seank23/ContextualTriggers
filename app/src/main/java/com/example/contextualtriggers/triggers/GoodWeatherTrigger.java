@@ -36,11 +36,12 @@ public class GoodWeatherTrigger implements TriggerInterface {
 
         List<String> goodWeather = Arrays.asList("Clear", "Clouds");
         SensorData weatherData = data.get(1);
+        if(weatherData == null)
+            return false;
 
-        if(weatherData != null) {
-            if (goodWeather.contains((String) weatherData.values.get(0)))
-                return true;
-        }
+        if (goodWeather.contains((String) weatherData.values.get(0)))
+            return true;
+
         return false;
     }
 }

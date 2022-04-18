@@ -17,6 +17,7 @@ import com.example.contextualtriggers.database.stepsRepository;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 public class ContextAPI extends Service implements ChangeListener {
@@ -53,6 +54,10 @@ public class ContextAPI extends Service implements ChangeListener {
         for(SensorInterface sensor : sensors)
             types.add(sensor.getSensorType());
         return types;
+    }
+
+    public HashSet<Integer> getDataBindings() {
+        return sr.getDataBindings();
     }
 
 //    public Long getLatestTimestamp() {
@@ -121,8 +126,8 @@ public class ContextAPI extends Service implements ChangeListener {
 
         // Sunset data
         SensorData sunsetSensorData = new SensorData(1, new ArrayList<>(), new ArrayList<>());
-        weatherSensorData.values.add(sunset.getTime());
-        weatherSensorData.timestamps.add(sunset.getTimestamp());
+        sunsetSensorData.values.add(sunset.getTime());
+        sunsetSensorData.timestamps.add(sunset.getTimestamp());
 
         allData.put(0, stepSensorData);
         allData.put(1, weatherSensorData);

@@ -14,6 +14,7 @@ import com.example.contextualtriggers.sensors.Location;
 import com.example.contextualtriggers.triggers.GoodWeatherTrigger;
 import com.example.contextualtriggers.triggers.StepTrigger;
 import com.example.contextualtriggers.api.TriggerManager;
+import com.example.contextualtriggers.triggers.SunsetTimeTrigger;
 
 public class SetupActivity extends AppCompatActivity {
 
@@ -38,5 +39,6 @@ public class SetupActivity extends AppCompatActivity {
         TriggerManager triggerManager = TriggerManager.instance;
         triggerManager.addTrigger(new StepTrigger());
         triggerManager.addTrigger(new GoodWeatherTrigger());
+        triggerManager.addTrigger(new SunsetTimeTrigger());
     }
 }

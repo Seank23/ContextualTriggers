@@ -10,6 +10,7 @@ import com.example.contextualtriggers.data.SensorData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class TriggerManager extends Service {
 
@@ -63,7 +64,7 @@ public class TriggerManager extends Service {
     private HashMap<Integer, SensorData> getTriggerData(String sensorTypes, HashMap<Integer, SensorData> inputData) {
 
         HashMap<Integer, SensorData> outputData = new HashMap<>();
-        ArrayList<Integer> activeSensors = ContextAPI.instance.getSensorTypes();
+        HashSet<Integer> activeSensors = ContextAPI.instance.getDataBindings();
         for (int type : activeSensors) {
             if (sensorTypes.contains(Integer.toString(type)))
                 outputData.put(type, inputData.get(type));

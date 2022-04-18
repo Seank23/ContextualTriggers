@@ -13,6 +13,9 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
 
@@ -29,6 +32,8 @@ public class stepsRepository {
     private WeatherEntity latestWeather;
     private SunsetTimeEntity latestSunsetTime;
 
+    private HashSet<Integer> dataBinded;
+
     public stepsRepository(Application app) {
         Database db = Database.getInstance(app);
         sDao = db.sDAO();
@@ -42,15 +47,21 @@ public class stepsRepository {
         notificationIds = nDao.getAllNotification();
         latestWeather = wDao.getLatestWeather();
         latestSunsetTime = stDao.getLatestSunsetTime();
+        dataBinded = new HashSet<>();
     }
 
     public void insert(stepsEntity steps) {
+        dataBinded.add(0);
         new InsertStepsASyncTask(sDao).execute(steps);
     }
 
-    public void insert(notificationEntity notification) {new InsertNotificationASyncTask(nDao).execute(notification);}
+    public void insert(notificationEntity notification) {
+        new InsertNotificationASyncTask(nDao).execute(notification);
+    }
 
     public void insert(LocationEntity location) {
+        dataBinded.add(1);
+        dataBinded.add(2);
         new InsertWeatherASyncTask(wDao).execute(location);
         new InsertSunsetTimeASyncTask(stDao).execute(location);
     }
@@ -76,7 +87,9 @@ public class stepsRepository {
 
     public SunsetTimeEntity getLatestSunsetTime() { return latestSunsetTime; }
 
-    public String getLatestNotificationTimeByID(int id) { return nDao.getLatestNotificationTimeByID(id);}
+    public String getLatestNotificationTimeByID(int id) { return nDao.getLatestNotificationTimeByID(id); }
+
+    public HashSet<Integer> getDataBindings() { return dataBinded; }
 
     private static class InsertStepsASyncTask extends AsyncTask<stepsEntity, Void, Void> {
 
@@ -161,7 +174,7 @@ public class stepsRepository {
         @Override
         protected Void doInBackground(LocationEntity... locationEntities) {
 
-            String str = String.format("https://api.sunrise-sunset.org/json?lat=%s&lng=%s&date=today",
+            String str = String.format("https://api.sunrise-sunset.org/json?lat=%s&lng=%s",
                     locationEntities[0].getLatitude(), locationEntities[0].getLongitude());
             String response, sunset = null;
             try {
@@ -173,10 +186,24 @@ public class stepsRepository {
                 }catch (JSONException err){
                     Log.d("Error", err.toString());
                 }
-                SunsetTimeEntity sunsetTimeEntity = new SunsetTimeEntity(System.currentTimeMillis(), sunset);
+                String sunsetFormatted = "";
+                String AMorPM = sunset.substring(sunset.length() - 3);
+                sunset = sunset.substring(0, sunset.length() - 3);
+                String[] sunsetSplit = sunset.split(":");
+                int h = Integer.parseInt(sunsetSplit[0]);
+                int m = Integer.parseInt(sunsetSplit[1]);
+                int s = Integer.parseInt(sunsetSplit[2]);
+                if(AMorPM.contains("PM"))
+                    h += 12;
+                if(h < 10)
+                    sunsetFormatted = "0" + h + ":" + m + ":" + s;
+                else
+                    sunsetFormatted = h + ":" + m + ":" + s;
+
+                SunsetTimeEntity sunsetTimeEntity = new SunsetTimeEntity(System.currentTimeMillis(), sunsetFormatted);
                 stDao.insert(sunsetTimeEntity);
                 System.out.println("Sunset time updated and inserted to DB");
-                System.out.println(sunset);
+                System.out.println(sunsetFormatted);
 
             } catch (Exception e) {
                 e.printStackTrace();
