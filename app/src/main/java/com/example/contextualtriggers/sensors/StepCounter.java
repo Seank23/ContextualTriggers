@@ -35,7 +35,7 @@ public class StepCounter extends Service implements SensorInterface, SensorEvent
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        stepCounter = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        stepCounter = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
 
         System.out.println("Hello");
 
