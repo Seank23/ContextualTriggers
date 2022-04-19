@@ -3,7 +3,7 @@ package com.example.contextualtriggers.notifications;
 import com.example.contextualtriggers.R;
 import com.example.contextualtriggers.framework.NotificationInterface;
 
-public class GoodWeatherNotification implements NotificationInterface {
+public class GoodWeatherMetTargetNotification implements NotificationInterface {
     @Override
     public String getTitle() {
         return "The Weather is Nice!";
@@ -11,7 +11,7 @@ public class GoodWeatherNotification implements NotificationInterface {
 
     @Override
     public String getText() {
-        return "You have reached your step target but the weather is still looking nice, why not go for a walk";
+        return "You have reached your step target but the weather is still looking nice, why not go for a walk?";
     }
 
     @Override

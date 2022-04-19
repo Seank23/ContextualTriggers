@@ -1,15 +1,17 @@
 package com.example.contextualtriggers.triggers;
 
+import com.example.contextualtriggers.Utils;
 import com.example.contextualtriggers.framework.NotificationInterface;
 import com.example.contextualtriggers.framework.TriggerInterface;
 import com.example.contextualtriggers.data.SensorData;
-import com.example.contextualtriggers.notifications.GoodWeatherNotification;
+import com.example.contextualtriggers.notifications.GoodWeatherMetTargetNotification;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class GoodWeatherTrigger implements TriggerInterface {
+public class GoodWeatherMetTargetTrigger implements TriggerInterface {
     @Override
     public int getId() {
         return 1;
@@ -17,7 +19,7 @@ public class GoodWeatherTrigger implements TriggerInterface {
 
     @Override
     public NotificationInterface getNotification() {
-        return new GoodWeatherNotification();
+        return new GoodWeatherMetTargetNotification();
     }
 
     @Override
@@ -37,14 +39,17 @@ public class GoodWeatherTrigger implements TriggerInterface {
         SensorData weatherData = data.get(1);
         if(stepsData == null || weatherData == null)
             return false;
-        if(weatherData.values.isEmpty())
+        if(stepsData.values.isEmpty() || weatherData.values.isEmpty())
             return false;
 
         List<String> goodWeather = Arrays.asList("Clear", "Clouds");
         int stepTarget = 10000;
-        int latestStepCount = (int)stepsData.values.get(0);
 
-        if (latestStepCount > stepTarget && goodWeather.contains((String) weatherData.values.get(0)))
+        long timeThreshold = Utils.getSeconds(new SimpleDateFormat("HH:mm:ss").format(System.currentTimeMillis())) * 1000; // Time in today so far
+
+        int totalSteps = Utils.getStepCountOverTime(timeThreshold, stepsData);
+
+        if (totalSteps > stepTarget && goodWeather.contains((String) weatherData.values.get(0)))
             return true;
 
         return false;

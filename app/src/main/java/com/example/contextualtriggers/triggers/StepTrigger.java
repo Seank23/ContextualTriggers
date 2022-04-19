@@ -1,5 +1,6 @@
 package com.example.contextualtriggers.triggers;
 
+import com.example.contextualtriggers.Utils;
 import com.example.contextualtriggers.framework.TriggerInterface;
 import com.example.contextualtriggers.data.SensorData;
 import com.example.contextualtriggers.notifications.InactivityNotification;
@@ -37,20 +38,7 @@ public class StepTrigger implements TriggerInterface {
             return false;
 
         long timeThreshold = 3600000; // 1 hour
-        long currentTime = System.currentTimeMillis();
-
-        long targetTime = currentTime - timeThreshold;
-        long closest = Math.abs(stepsData.timestamps.get(0) - targetTime);
-        int closestIndex = 0;
-        for(int i = 1; i < stepsData.timestamps.size(); i++){
-            long distance = Math.abs(stepsData.timestamps.get(i) - targetTime);
-            if(distance < closest){
-                closestIndex = i;
-                closest = distance;
-            }
-        }
-        // Get steps difference between most recent recording and closest recording to time threshold
-        int totalSteps = (int)stepsData.values.get(0) - (int)stepsData.values.get(closestIndex);
+        int totalSteps = Utils.getStepCountOverTime(timeThreshold, stepsData);
 
         if(totalSteps < 100)
             return true;

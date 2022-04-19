@@ -1,5 +1,6 @@
 package com.example.contextualtriggers.triggers;
 
+import com.example.contextualtriggers.Utils;
 import com.example.contextualtriggers.framework.NotificationInterface;
 import com.example.contextualtriggers.framework.TriggerInterface;
 import com.example.contextualtriggers.data.SensorData;
@@ -43,10 +44,10 @@ public class SunsetTimeTrigger implements TriggerInterface {
 
         long timeThreshold = 10800; // 3 hours
         String currentTime = new SimpleDateFormat("HH:mm:ss").format(System.currentTimeMillis());
-        int difference = getSeconds((String)sunsetData.values.get(0)) - getSeconds(currentTime);
+        int difference = Utils.getSeconds((String)sunsetData.values.get(0)) - Utils.getSeconds(currentTime);
 
         if(difference > 0 && difference < timeThreshold &&
-                getSeconds(currentTime) > 61200) { // After 17:00
+                Utils.getSeconds(currentTime) > 61200) { // After 17:00
             if(difference < 3600) {
                 int roundedTime = (int)(Math.ceil(difference / 900.0) * 900) / 60;
                 args.add(0, roundedTime + " minutes");
@@ -57,10 +58,5 @@ public class SunsetTimeTrigger implements TriggerInterface {
             return true;
         }
         return false;
-    }
-
-    private int getSeconds(String timeStr) {
-        String[] split = timeStr.split(":");
-        return Integer.parseInt(split[2]) + Integer.parseInt(split[1]) * 60 + Integer.parseInt(split[0]) * 3600;
     }
 }

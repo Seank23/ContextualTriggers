@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startServices() {
-        // Start Framewrk Services
+        // Start Framework Services
         startService(new Intent(this, ServiceManager.class));
         startService(new Intent(this, ContextAPI.class));
         startService(new Intent(this, TriggerManager.class));

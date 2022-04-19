@@ -13,7 +13,7 @@ public class GoodWeatherReachTargetNotification implements NotificationInterface
 
     @Override
     public String getTitle() {
-        return "Reach you step target!";
+        return "Reach your step target!";
     }
 
     @Override

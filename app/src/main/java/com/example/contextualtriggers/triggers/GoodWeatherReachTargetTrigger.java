@@ -1,5 +1,6 @@
 package com.example.contextualtriggers.triggers;
 
+import com.example.contextualtriggers.Utils;
 import com.example.contextualtriggers.framework.NotificationInterface;
 import com.example.contextualtriggers.framework.TriggerInterface;
 import com.example.contextualtriggers.data.SensorData;
@@ -47,30 +48,13 @@ public class GoodWeatherReachTargetTrigger implements TriggerInterface {
         List<String> goodWeather = Arrays.asList("Clear", "Clouds");
         int stepTarget = 10000;
         args.add(0, Integer.toString(stepTarget));
-        long timeThreshold = getSeconds(new SimpleDateFormat("HH:mm:ss").format(System.currentTimeMillis())) * 1000; // Time in today so far
+        long timeThreshold = Utils.getSeconds(new SimpleDateFormat("HH:mm:ss").format(System.currentTimeMillis())) * 1000; // Time in today so far
 
-        long currentTime = System.currentTimeMillis();
-        long targetTime = currentTime - timeThreshold;
-        long closest = Math.abs(stepsData.timestamps.get(0) - targetTime);
-        int closestIndex = 0;
-        for(int i = 1; i < stepsData.timestamps.size(); i++){
-            long distance = Math.abs(stepsData.timestamps.get(i) - targetTime);
-            if(distance < closest){
-                closestIndex = i;
-                closest = distance;
-            }
-        }
-        // Get steps difference between most recent recording and closest recording to time threshold
-        int totalSteps = (int)stepsData.values.get(0) - (int)stepsData.values.get(closestIndex);
+        int totalSteps = Utils.getStepCountOverTime(timeThreshold, stepsData);
 
         if(goodWeather.contains((String) weatherData.values.get(0)) && totalSteps < stepTarget)
             return true;
 
         return false;
-    }
-
-    private int getSeconds(String timeStr) {
-        String[] split = timeStr.split(":");
-        return Integer.parseInt(split[2]) + Integer.parseInt(split[1]) * 60 + Integer.parseInt(split[0]) * 3600;
     }
 }

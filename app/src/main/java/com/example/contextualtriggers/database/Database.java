@@ -50,7 +50,7 @@ public abstract class Database extends RoomDatabase {
         }
         @Override
         protected Void doInBackground(Void... voids) {
-            //sDao.insert(new StepsEntity(0,new Timestamp(System.currentTimeMillis()).getTime()));
+            sDao.insert(new StepsEntity(0, new Timestamp(1649500790).getTime()));
             nDao.insert(new NotificationEntity("2022-04-09 10:55:02.793",0));
             wDao.insert(new WeatherEntity(System.currentTimeMillis(),"Clouds"));
             wDao.insert(new WeatherEntity(System.currentTimeMillis(), "Clear"));
